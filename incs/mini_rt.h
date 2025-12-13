@@ -67,8 +67,7 @@ void			raycast_threaded(t_data *data);
 void			*thread_tile_worker(void *arg);
 
 //	color/calculate_color.c
-t_rgb			calculate_color(t_data *data, t_object obj, 
-					t_ray ray, float t, unsigned int *seed);
+t_rgb	calculate_color(t_data *data, t_surface *surf, unsigned int *seed);
 
 void			fill_black(t_data *data);
 //	color/checkerboard.c

@@ -1,0 +1,99 @@
+# ==============================================================================
+#                          Prismatic Sanctum
+# ==============================================================================
+
+# --- Ambient Light ---
+# Soft ambient for gentle fill light
+A 0.15 245,250,255
+
+# --- Camera ---
+# Elevated angle capturing the interplay of glass and metal
+C -8,12,28 0.1,-0.2,-1 50
+
+# --- Lights ---
+# Primary area light - cool white with hint of blue
+LA -5,22,10 1 240,245,255 10
+# Secondary warm accent light
+LA 8,18,-8 0.7 255,240,220 6
+
+# ==============================================================================
+#                               Room Architecture
+# ==============================================================================
+
+# --- Floor ---
+# Pale marble with subtle reflections
+pl:ck:3:re:0.25:gl:0.08 0,0,0 0,1,0 245,245,250/255,255,255
+
+# --- Walls ---
+# Left wall - soft rose gold
+pl:sh:0 -25,0,0 1,0,0 255,235,220
+# Right wall - pale sky blue
+pl:sh:0 25,0,0 -1,0,0 230,240,250
+
+# ==============================================================================
+#                         Glass & Crystal Forms
+# ==============================================================================
+
+# --- Central Glass Sculpture ---
+# Large transparent sphere - the focal point
+sp:re:0.95:gl:0.02 0,8,0 8 252,252,255
+
+# Frosted glass sphere nested inside visually
+sp:re:0.6:gl:0.4 0,8,0 6 240,245,250
+
+# --- Glass Cylinders ---
+# Tall clear glass cylinder (left)
+cy:re:0.9:gl:0.05 -10,0,-5 0,1,0 3 18 245,250,255
+
+# Medium frosted glass cylinder (right)
+cy:re:0.7:gl:0.3 8,0,-3 0,1,0 2.5 14 250,248,255
+
+# ==============================================================================
+#                         Metallic Accents
+# ==============================================================================
+
+# --- Gold Elements ---
+# Polished gold sphere (left front) - bright and reflective
+sp:re:0.95:gl:0.03 -8,4,10 4.5 255,215,100
+
+# Rose gold cone (right rear)
+co:re:0.88:gl:0.08 12,0,-10 0,1,0 4 12 245,200,160
+
+# Brushed gold small sphere (accent)
+sp:re:0.85:gl:0.2 -14,3,2 3 235,195,80
+
+# --- Chrome & Steel ---
+# Perfect chrome sphere (right front) - mirror finish
+sp:re:1.0 6,5,14 5 245,245,250
+
+# Brushed steel cylinder (back left)
+cy:re:0.82:gl:0.18 -12,0,-12 0,1,0 3.5 16 220,225,230
+
+# Polished steel cone (center right)
+co:re:0.92:gl:0.06 14,0,4 0,1,0 3.5 10 230,235,240
+
+# ==============================================================================
+#                         Supporting Elements
+# ==============================================================================
+
+# --- Glass Accent Pieces ---
+# Small crystal sphere cluster
+sp:re:0.88:gl:0.08 -4,2,16 2.5 248,252,255
+sp:re:0.9:gl:0.05 -6,1.8,18 2 250,250,255
+
+# Tall thin glass column (far left)
+cy:re:0.85:gl:0.12 -16,0,6 0,1,0 1.5 20 242,248,255
+
+# --- Metallic Details ---
+# Tiny polished gold "pearls"
+sp:re:0.93:gl:0.04 4,1,8 1.5 255,225,120
+sp:re:0.94:gl:0.03 -2,1,12 1.2 250,210,90
+
+# Satin-finish white gold sphere (back center)
+sp:re:0.78:gl:0.25 0,6,-14 7 240,240,245
+
+# Small chrome cylinder (front right accent)
+cy:re:0.96:gl:0.04 10,0,18 0,1,0 2 8 242,242,248
+
+# Brushed aluminum sphere (mid-ground)
+sp:re:0.75:gl:0.22 -5,4,6 4 215,220,225

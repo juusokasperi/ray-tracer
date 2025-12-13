@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_object.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: phuocngu <phuocngu@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: jrinta- <jrinta-@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:00:00 by phuocngu          #+#    #+#             */
-/*   Updated: 2025/05/13 19:46:09 by phuocngu         ###   ########.fr       */
+/*   Updated: 2025/12/13 16:51:08 by jrinta-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	apply_object_modifiers(t_object *obj, t_line_context *ctx)
 		obj->glossiness = ctx->glossiness;
 	if (ctx->refraction_index > -0.5f)
 		obj->refraction_index = ctx->refraction_index;
-	if (ctx->refraction_index > 0.5f)
+	if (ctx->reflectivity > -0.5f)
 		obj->reflectivity = ctx->reflectivity;
 }
 
@@ -68,5 +68,5 @@ void	setup_object_optionals(t_object *obj, t_line_context *ctx)
 {
 	if (!obj || !ctx)
 		return ;
-	
+
 }
