@@ -6,7 +6,7 @@
 /*   By: jrinta- <jrinta-@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 15:23:55 by jrinta-           #+#    #+#             */
-/*   Updated: 2025/05/19 23:45:28 by jrinta-          ###   ########.fr       */
+/*   Updated: 2025/12/13 20:14:29 by jrinta-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_rgb	calculate_color(t_data *data, t_surface *surf, unsigned int *seed)
 		{
 			light_ray = build_light_ray(surf->point, data->scene.lights[i],
 				surf->normal, &light_dist);
-			if (!light_visible(surf->view_dir, data->scene.lights[i].pos, *surf->obj))
+			if (!light_visible(surf->ray_origin, data->scene.lights[i].pos, *surf->obj))
 				continue ;
 			light_contrib = calculate_light_contribution(data->scene.lights[i],
 				surf, light_ray, light_dist);

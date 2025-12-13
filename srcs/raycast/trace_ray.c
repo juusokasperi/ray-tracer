@@ -16,6 +16,7 @@ t_rgb	trace_ray(t_data *data, t_ray ray, int depth, unsigned int *seed)
 		surf.obj = &closest;
 		surf.point = get_point(ray, t);
 		surf.view_dir = ray.direction;
+		surf.ray_origin = ray.origin;
 		surf.normal = calculate_normal(ray.direction, surf.point, closest);
 		check_checkerboard(&closest, surf.point);
 		return (get_material_color(data, &surf, ray, depth, seed));

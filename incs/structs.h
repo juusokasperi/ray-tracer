@@ -6,7 +6,7 @@
 /*   By: jrinta- <jrinta-@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 10:13:36 by jrinta-           #+#    #+#             */
-/*   Updated: 2025/05/22 11:57:10 by jrinta-          ###   ########.fr       */
+/*   Updated: 2025/12/13 20:12:55 by jrinta-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,6 +251,7 @@ typedef struct s_surface_info
 	t_point		point;
 	t_vector	normal;
 	t_vector	view_dir;
+	t_point		ray_origin;
 	t_object	*obj;
 }	t_surface;
 
