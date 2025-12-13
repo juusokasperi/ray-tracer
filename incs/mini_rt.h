@@ -43,7 +43,7 @@
 
 # define BACKGROUND_COLOR 0x000000FF
 
-# define MAX_SAMPLES 100
+# define MAX_SAMPLES 512
 
 # ifndef NUM_THREADS
 #  define NUM_THREADS 4

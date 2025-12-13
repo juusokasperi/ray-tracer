@@ -1,4 +1,4 @@
-C	0,0,15		0,0,-1		50
+distC	0,0,15		0,0,-1		50
 #	Change (20,0,0) to (-20,0,0) to get sphere lit from the right
 L	20,0,0		1			255,255,255
 sp	0,0,0		10			120,180,120
