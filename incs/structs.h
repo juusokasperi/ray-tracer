@@ -99,11 +99,19 @@ typedef struct s_ambient
 	float	ratio;
 }	t_ambient;
 
+typedef enum e_light_type
+{
+	LIGHT_POINT,
+	LIGHT_AREA
+}	t_light_type;
+
 typedef struct s_light
 {
-	t_rgb		color;
-	t_vector	pos;
-	float		ratio;
+	t_light_type	type;
+	t_rgb			color;
+	t_vector		pos;
+	float			ratio;
+	float			radius;
 }	t_light;
 
 typedef struct s_ray

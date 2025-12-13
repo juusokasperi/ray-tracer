@@ -10,6 +10,7 @@ SRCS = main.c							\
 	shadows/shadow_check.c				\
 	shadows/shadow_check_2.c			\
 	shadows/calculate_normals.c			\
+	shadows/soft_shadow.c				\
 	hooks/camera_rotation.c				\
 	hooks/camera_movement.c				\
 	hooks/resize.c						\

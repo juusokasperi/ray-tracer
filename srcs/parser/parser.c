@@ -23,7 +23,7 @@ static bool	process_identifier(char *identifier, t_line_context *ctx)
 	else if (strncmp(identifier, "C", 1) == 0)
 		result = parse_camera(&current_line[ctx->idx], ctx->data);
 	else if (strncmp(identifier, "L", 1) == 0)
-		result = parse_light(&current_line[ctx->idx], ctx->data);
+		result = parse_light(&current_line[ctx->idx], ctx->data, identifier);
 	else if (strncmp(identifier, "sp", 2) == 0)
 		result = parse_sphere(&current_line[ctx->idx], ctx);
 	else if (strncmp(identifier, "pl", 2) == 0)

@@ -36,7 +36,7 @@ bool	allocate_scene_memory(t_data *data);
 bool	cleanup(t_data *data);
 bool	parse_ambient(char *line, t_data *data);
 bool	parse_camera(char *line, t_data *data);
-bool	parse_light(char *line, t_data *data);
+bool	parse_light(char *line, t_data *data, char *identifier);
 
 /* Object parsing functions */
 bool	parse_sphere(char *line, t_line_context *ctx);

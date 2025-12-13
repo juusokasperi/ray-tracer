@@ -43,7 +43,7 @@
 
 # define BACKGROUND_COLOR 0x000000FF
 
-# define MAX_SAMPLES 16
+# define MAX_SAMPLES 100
 
 # ifndef NUM_THREADS
 #  define NUM_THREADS 4
@@ -52,7 +52,7 @@
 # define TILE_SIZE 32
 
 # define EPSILON 0.0001f
-# define SHADOW_EPSILON 0.001f
+# define SHADOW_EPSILON 0.0001f
 # define PLANE_EPSILON 0.00001f
 
 // threads
@@ -64,7 +64,9 @@ void			raycast_threaded(t_data *data);
 void			*thread_tile_worker(void *arg);
 
 //	color/calculate_color.c
-t_rgb			calculate_color(t_data *data, t_object obj, t_ray ray, float t);
+t_rgb			calculate_color(t_data *data, t_object obj, 
+					t_ray ray, float t, unsigned int *seed);
+
 void			fill_black(t_data *data);
 //	color/checkerboard.c
 void			check_checkerboard(t_object *obj, t_point point);
@@ -102,10 +104,14 @@ t_rgb			vec_to_rgb(t_vector vec);
 //	shadows/shadow_check.c && shadow_check_2.c
 bool			light_visible(t_vector cam_pos, t_vector light_pos,
 					t_object obj);
-bool			in_shadow(t_ray light_ray, t_data *data, t_light light);
+bool			in_shadow(t_ray light_ray, t_data *data, float max_dist);
 //	shadows/calculate_normals.c
 t_point			calculate_normal(t_vector view_direction,
 					t_point hit_point, t_object obj);
+
+// shadows/soft_shadow.c)
+float			calculate_shadow_factor(t_data *data, t_surface *surf, 
+					t_light light, unsigned int *seed);
 
 //	shadows/diffuse.c
 t_rgb			calculate_light_contribution(t_light light, t_surface *surf,
@@ -117,6 +123,7 @@ t_ray			build_light_ray(t_point hit_point, t_light light,
 					t_vector normal, float *out_dist);
 t_ray			get_ray_for_px(t_data *data, float px, float py);
 t_point			get_point(t_ray ray, float t);
+void			init_ray_inv(t_ray *ray);
 
 //	utils/main_utils.c
 void			setup_rendering(t_data *data);

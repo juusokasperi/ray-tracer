@@ -12,7 +12,7 @@
 
 #include "mini_rt.h"
 
-static void	init_ray_inv(t_ray *ray)
+void	init_ray_inv(t_ray *ray)
 {
 	if (fabsf(ray->direction.x) < EPSILON)
 		ray->inv_dir.x = 1.0f / EPSILON;

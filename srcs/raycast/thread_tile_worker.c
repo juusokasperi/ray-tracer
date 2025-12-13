@@ -46,7 +46,7 @@ static inline t_vector	trace_pixel(t_pixel_ctx *ctx)
 	ray = get_ray_for_px(ctx->data, ctx->x + jitter[0], ctx->y + jitter[1]);
 	t = find_closest_intersection(ray, ctx->data, &closest);
 	if (closest.type != NONE)
-		color = calculate_color(ctx->data, closest, ray, t);
+		color = calculate_color(ctx->data, closest, ray, t, ctx->rng_state);
 	else
 		color = (t_rgb){0, 0, 0};
 	return (rgb_to_vec(color));

@@ -35,20 +35,15 @@ static bool shadow_planes(t_ray ray, t_data *data, float max_dist)
 
 	@return boolean deciding whether or not the ray is in shadow.
 */
-bool	in_shadow(t_ray light_ray, t_data *data, t_light light)
+bool	in_shadow(t_ray light_ray, t_data *data, float max_dist)
 {
-	float	light_dist;
-
-	if (light.ratio <= 0)
-		return (true);
-	light_dist = vector_magnitude(vector_subtract(light.pos, light_ray.origin));
-	if (light_dist < EPSILON)
+	if (max_dist < EPSILON)
 		return (false);
 	if (data->scene.plane_count > 0)
-		if (shadow_planes(light_ray, data, light_dist))
+		if (shadow_planes(light_ray, data, max_dist))
 			return (true);
 	if (data->scene.object_count > 0)
-		if (shadow_bvh(light_ray, data, light_dist))
+		if (shadow_bvh(light_ray, data, max_dist))
 			return (true);
 	return (false);
 }
