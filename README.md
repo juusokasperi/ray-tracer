@@ -1,7 +1,7 @@
 ## miniRT
 <img src="./img/miniRT_1.png" width="400" alt="miniRT_1" />
 
-- A raytracer written from scratch with C. Uses the MLX42 graphical library.
+A raytracer written from scratch with C. Uses the MLX42 graphical library.
 
 ### Features:
 - Uses my custom [memory arena](https://www.github.com/juusokasperi/memarena) for all memory operations.
@@ -11,6 +11,7 @@
 - Supports planes, cylinders, cones and spheres.
 - Diffuse and specular shading and falloff. 
 - Supports multiple coloured lights. Has a checkerboard pattern implementation.
+- Supports point and area lights (hard shadows / soft shadows).
 
 ### Movement in scenes:
 ```
@@ -51,6 +52,10 @@ C	0,0,0		0,0,1	 			50
 # Lights (any amount)
 	position	ratio (0-1)	rgb
 L	0,0,0		1		255,255,255
+
+# Area lights (any amount)
+	position	ratio (0-1)	rgb     radius
+LA	0,0,0		1		255,255,255     5
 
 # Cylinder
 	center	direction	diameter	height		rgb
