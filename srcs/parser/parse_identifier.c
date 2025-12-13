@@ -83,7 +83,7 @@ static bool	process_modifiers(char **args, t_line_context *ctx)
 		else if (strcmp(args[i], "ri") == 0)
 		{
 			if (!parse_modifier_value(args, i, &ctx->refraction_index, "ri")
-				|| !validate_range_float(ctx->refraction_index, 1.f, 3.f, "Refraction index"))
+				|| !validate_range_float(ctx->refraction_index, 1.f, 5.f, "Refraction index"))
 				return (false);
 		}
 		else if (strcmp(args[i], "re") == 0)

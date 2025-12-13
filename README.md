@@ -1,5 +1,5 @@
 ## miniRT
-<img src="./img/miniRT_1.png" width="400" alt="miniRT_1" />
+<img src="./img/miniRT_metals.png" width="400" alt="miniRT_1" />
 
 A raytracer written from scratch with C. Uses the MLX42 graphical library.
 
@@ -12,6 +12,7 @@ A raytracer written from scratch with C. Uses the MLX42 graphical library.
 - Diffuse and specular shading and falloff. 
 - Supports multiple coloured lights. Has a checkerboard pattern implementation.
 - Supports point and area lights (hard shadows / soft shadows).
+- Configurable shininess, reflectivity, refraction and glossiness values for objects.
 
 ### Movement in scenes:
 ```
@@ -42,7 +43,7 @@ Other:
 
 ```
 # Ambient light
-	ratio (0-1)		rgb
+	ratio (0-2)		rgb
 A	0			255,255,255
 
 # Camera
@@ -50,7 +51,7 @@ A	0			255,255,255
 C	0,0,0		0,0,1	 			50
 
 # Lights (any amount)
-	position	ratio (0-1)	rgb
+	position	ratio (0-2)	rgb
 L	0,0,0		1		255,255,255
 
 # Area lights (any amount)
@@ -75,11 +76,15 @@ co	0,0,0	0,1,0 		10		10	255,255,100
 
 # Checkerboard pattern (works for every object)
 pl:ck:0.5 0,0,0 0,1,0 225,225,225/100,100,100
+
+# All modifiers for an object
+sp:ck:0.5:ri:3:re:1:gl:0.1:sh:500 0,0,0 16 225,225,225
 ```
 
 ### Example scenes:
 
 
-<img src="./img/miniRT_2.png" width="400" alt="miniRT_2" />
-<img src="./img/miniRT_3.png" width="400" alt="miniRT_3" />
-<img src="./img/miniRT_4.png" width="400" alt="miniRT_4" />
+<img src="./img/miniRT_spheres.png" width="400" alt="miniRT_spheres" />
+<img src="./img/miniRT_42.png" width="400" alt="miniRT_42" />
+<img src="./img/miniRT_hive.png" width="400" alt="miniRT_hive" />
+<img src="./img/miniRT_sphere.png" width="400" alt="miniRT_sphere" />

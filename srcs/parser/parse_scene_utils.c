@@ -33,5 +33,5 @@ bool	parse_ratio(char **parts, int index, float *ratio, char *param_name)
 	result = parse_float(parts[index], ratio);
 	if (!result)
 		return (false);
-	return (validate_range_float(*ratio, 0.0, 1.0, param_name));
+	return (validate_range_float(*ratio, 0.0, 2.0, param_name));
 }
