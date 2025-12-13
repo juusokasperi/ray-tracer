@@ -158,6 +158,10 @@ typedef struct s_object
 	t_rgb			color;
 	bool			is_checkered;
 	t_checkerboard	checkerboard;
+	float			shininess;
+	float			glossiness;
+	float			refraction_index;
+	float			reflectivity;
 	union u_data
 	{
 		t_sphere	sphere;

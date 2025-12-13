@@ -41,7 +41,7 @@ t_rgb	calculate_light_contribution(t_light light, t_surface *surf,
 	r_dot_v = vector_dot(reflect_dir, vector_multiply(surf->view_dir, -1.0f));
 	if (r_dot_v > 0)
 	{
-		spec_intensity = powf(r_dot_v, 50.0f);
+		spec_intensity = powf(r_dot_v, surf->obj->shininess);
 		specular = rgb_scalar_multiply(
 				light.color, effective_ratio * spec_intensity);
 		diffuse = rgb_add(diffuse, specular);

@@ -30,7 +30,7 @@ bool	parse_plane(char *line, t_line_context *ctx)
 		|| !parse_object_color(a, parts[2], plane, ctx->is_checkered,
 			&ctx->color_2))
 		return (false);
-	setup_checkered_object(plane, ctx);
+	apply_object_modifiers(plane, ctx);
 	data->scene.plane_count++;
 	return (true);
 }

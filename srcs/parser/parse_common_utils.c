@@ -58,6 +58,10 @@ bool	validate_and_init_object(t_data *data, t_object **obj,
 	else
 		*obj = &data->scene.objects[data->scene.object_count];
 	(*obj)->type = type;
+	(*obj)->shininess = 50.0f;
+    (*obj)->refraction_index = 0.0f;
+    (*obj)->glossiness = 0.0f;
+	(*obj)->reflectivity = 0.0f;
 	return (true);
 }
 

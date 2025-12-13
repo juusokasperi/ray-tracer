@@ -2,6 +2,7 @@ SRCS = main.c							\
 	utils/ray_utils.c					\
 	color/calculate_color.c				\
 	color/checkerboard.c				\
+	color/material.c					\
 	intersect/cylinder.c				\
 	intersect/cone.c					\
 	intersect/cone_2.c					\
@@ -49,6 +50,7 @@ SRCS = main.c							\
 	hooks/camera_controls.c				\
 	raycast/raycast_threaded.c			\
 	raycast/thread_tile_worker.c		\
+	raycast/trace_ray.c					\
 	arena/arena_strtrim.c				\
 	arena/arena_split_isspace.c			\
 	arena/arena_strdup.c

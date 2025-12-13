@@ -33,7 +33,7 @@ bool	parse_sphere(char *line, t_line_context *ctx)
 			&ctx->color_2))
 		return (false);
 	sphere->data.sphere.radius = diameter / 2;
-	setup_checkered_object(sphere, ctx);
+	apply_object_modifiers(sphere, ctx);
 	data->scene.object_count++;
 	return (true);
 }
