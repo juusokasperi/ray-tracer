@@ -1,0 +1,22 @@
+# Ambient light
+A 0.2 255,255,255
+
+# Camera
+C 0,7,-10 0,-0.2,1 50
+
+# Lights
+L 3,-10,-10 0.5 255,255,255
+L -10,10,-15 0.5 255,255,255
+
+# Objects
+# Lollipop head (red sphere)
+sp 0,8,15 10 200,10,10
+
+# Lollipop top rim (red cylinder)
+cy 0,8,15 0,1,0 10.4 0.5 200,10,10
+
+# Lollipop stick (white cylinder)
+cy 0,-2,15 0,1,0 0.74 25 225,225,225
+
+# Ground plane (brown)
+pl 0,-15,0 0,1,0 86,66,38

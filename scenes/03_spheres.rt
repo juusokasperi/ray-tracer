@@ -1,0 +1,9 @@
+A	0.2										255,255,255
+L	10,10,30				0.5				255,255,255
+C	0,0,30		0,0,-1		50
+
+
+sp	0,0,0					10			250,180,200
+
+# Move this back along Z axis and offset in another axis to make it visible
+sp	0,0,0					10			120,180,120
