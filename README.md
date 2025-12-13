@@ -2,9 +2,15 @@
 <img src="./img/miniRT_1.png" width="400" alt="miniRT_1" />
 
 - A raytracer written from scratch with C. Uses the MLX42 graphical library.
-- To utilize multithreading, run `make bonus` and use the `./miniRT_bonus` executable.
-- Has a BVH implementation for efficiency.
-- Supports planes, cylinders, cones and spheres. Has diffuse and specular shading and falloff. Supports multiple coloured lights. Has a checkerboard pattern implementation.
+
+### Features:
+- Uses my custom [memory arena](https://www.github.com/juusokasperi/memarena) for all memory operations.
+- Utilizes multithreading and a thread-pool system for efficient performance.
+- Anti-aliasing.
+- Bounding Volume Hierarchy implementation for efficiency.
+- Supports planes, cylinders, cones and spheres.
+- Diffuse and specular shading and falloff. 
+- Supports multiple coloured lights. Has a checkerboard pattern implementation.
 
 ### Movement in scenes:
 ```
