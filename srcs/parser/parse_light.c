@@ -32,7 +32,6 @@ bool	parse_light(char *line, t_data *data, char *identifier)
 	parts = arena_split_isspace(a, line);
 	light_idx = data->scene.light_count;
 	light = &data->scene.lights[light_idx];
-	
 	if (strlen(identifier) == 2 && strncmp(identifier, "LA", 2) == 0)
 	{
 		light->type = LIGHT_AREA;

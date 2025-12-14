@@ -25,7 +25,7 @@ static bool	parse_cylinder_attrs(Arena *a, char **parts, t_object *cylinder,
 			&ctx->color_2))
 		return (false);
 	cylinder->data.cylinder.radius /= 2.0;
-	setup_checkered_object(cylinder, ctx);
+	apply_object_modifiers(cylinder, ctx);
 	return (true);
 }
 

@@ -35,20 +35,13 @@ static inline t_vector	accumulate_sample(t_data *data, int idx, t_vector new_col
 static inline t_vector	trace_pixel(t_pixel_ctx *ctx)
 {
 	t_ray		ray;
-	t_object	closest;
 	t_rgb		color;
 	float		jitter[2];
-	float		t;
 
 	jitter[0] = random_float(ctx->rng_state);
 	jitter[1] = random_float(ctx->rng_state);
-	closest.type = NONE;
 	ray = get_ray_for_px(ctx->data, ctx->x + jitter[0], ctx->y + jitter[1]);
-	t = find_closest_intersection(ray, ctx->data, &closest);
-	if (closest.type != NONE)
-		color = calculate_color(ctx->data, closest, ray, t, ctx->rng_state);
-	else
-		color = (t_rgb){0, 0, 0};
+	color = trace_ray(ctx->data, ray, MAX_DEPTH, ctx->rng_state);
 	return (rgb_to_vec(color));
 }
 

@@ -19,6 +19,10 @@ typedef struct s_line_context
 {
 	char	*line;
 	int		idx;
+	float	shininess;
+	float	glossiness;
+	float	refraction_index;
+	float	reflectivity;
 	bool	is_checkered;
 	float	scale;
 	t_rgb	color_2;
@@ -50,7 +54,7 @@ bool	parse_object_position(Arena *a, char **parts, t_vector *position);
 bool	parse_object_direction(Arena *a, char **parts, t_vector *direction);
 bool	parse_object_color(Arena *a, char *color_str, t_object *object,
 			bool is_checkered, t_rgb *color_2);
-void	setup_checkered_object(t_object *obj, t_line_context *ctx);
+void	apply_object_modifiers(t_object *obj, t_line_context *ctx);
 
 /* Common parsing utilities */
 bool	validate_parts_count(char **parts, int expected_count, char *obj_name);

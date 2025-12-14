@@ -45,6 +45,8 @@
 
 # define MAX_SAMPLES 512
 
+# define MAX_DEPTH 5
+
 # ifndef NUM_THREADS
 #  define NUM_THREADS 4
 # endif
@@ -54,6 +56,7 @@
 # define EPSILON 0.0001f
 # define SHADOW_EPSILON 0.0001f
 # define PLANE_EPSILON 0.00001f
+# define BIGGER_EPSILON 0.001f
 
 // threads
 void			cleanup_thread_pool(t_data *data);
@@ -64,12 +67,15 @@ void			raycast_threaded(t_data *data);
 void			*thread_tile_worker(void *arg);
 
 //	color/calculate_color.c
-t_rgb			calculate_color(t_data *data, t_object obj, 
-					t_ray ray, float t, unsigned int *seed);
+t_rgb	calculate_color(t_data *data, t_surface *surf, unsigned int *seed);
 
 void			fill_black(t_data *data);
 //	color/checkerboard.c
 void			check_checkerboard(t_object *obj, t_point point);
+
+// color/material.c
+t_rgb			get_material_color(t_data *data, t_surface *surf,
+					t_ray ray, int depth, unsigned int *seed);
 
 //	hooks/resize.c
 void			resize_hook(int width, int height, void *param);
@@ -89,8 +95,8 @@ float			cylinder_ray_intersect(t_ray ray, t_cylinder *cylinder);
 float			cone_ray_intersect(t_ray ray, t_cone *cone);
 t_ray			transform_ray_cone(t_ray ray, t_cone cone);
 
-//	raycast/raycast.c
-void			raycast(t_data *data);
+// raycast/trace_ray.c
+t_rgb			trace_ray(t_data *data, t_ray ray, int depth, unsigned int *seed);
 
 //	rgb_utils/rgb.c && rgb_2.c
 t_rgb			rgb_scalar(t_rgb a, t_rgb b);
@@ -138,5 +144,6 @@ char			*arena_strtrim(Arena *a, char const *s1, char const *set);
 char 			**arena_split_isspace(Arena *a, const char *s);
 char			**arena_split(Arena *a, const char *s, const char *delims);
 char			*arena_strdup(Arena *a, const char *s);
+
 
 #endif
