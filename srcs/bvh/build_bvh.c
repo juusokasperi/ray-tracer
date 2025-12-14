@@ -12,12 +12,12 @@
 
 #include "mini_rt.h"
 
-static int		partition_object(t_object *objects,
+static int		partition_object(t_object_geom *objects,
 					int start, int end, int axis);
-static uint32_t	build_leaf_node(t_bvh *bvh, t_object *objects,
+static uint32_t	build_leaf_node(t_bvh *bvh, t_object_geom *objects,
 					int start, int count);
-static uint32_t	build_two_object_node(t_bvh *bvh, t_object *objects, int start);
-static uint32_t	build_bvh(t_bvh *bvh, t_object *objects, int start, int end);
+static uint32_t	build_two_object_node(t_bvh *bvh, t_object_geom *objects, int start);
+static uint32_t	build_bvh(t_bvh *bvh, t_object_geom *objects, int start, int end);
 
 /*
 	Creates a bounding volume hierarchy structure, which reduces
@@ -46,7 +46,7 @@ t_bvh	init_bvh(t_data *data)
 		exit(1);
 	}
 	bvh.node_count = 0;
-	build_bvh(&bvh, data->scene.objects, 0, data->scene.object_count - 1);
+	build_bvh(&bvh, data->scene.geometry, 0, data->scene.object_count - 1);
 	return (bvh);
 }
 
@@ -56,7 +56,7 @@ t_bvh	init_bvh(t_data *data)
 
 	@return Mid point of the array.
 */
-static int	partition_object(t_object *objects, int start, int end, int axis)
+static int	partition_object(t_object_geom *objects, int start, int end, int axis)
 {
 	float		pivot_value;
 	float		value;
@@ -84,7 +84,7 @@ static int	partition_object(t_object *objects, int start, int end, int axis)
 	Builds the leaf node, which in our case will always contain
 	exactly 1 object.
 */
-static uint32_t	build_leaf_node(t_bvh *bvh, t_object *objects,
+static uint32_t	build_leaf_node(t_bvh *bvh, t_object_geom *objects,
 					int start, int count)
 {
 	uint32_t		node_i;
@@ -110,7 +110,7 @@ static uint32_t	build_leaf_node(t_bvh *bvh, t_object *objects,
 	If only two objects remain while building the bvh, we sort them and
 	create leaf nodes for both of them.
 */
-static uint32_t	build_two_object_node(t_bvh *bvh, t_object *objects, int start)
+static uint32_t	build_two_object_node(t_bvh *bvh, t_object_geom *objects, int start)
 {
 	uint32_t		node_i;
 	uint32_t		left;
@@ -135,7 +135,7 @@ static uint32_t	build_two_object_node(t_bvh *bvh, t_object *objects, int start)
 /*
 	Creates a BVH tree recursively.
 */
-static uint32_t	build_bvh(t_bvh *bvh, t_object *objects, int start, int end)
+static uint32_t	build_bvh(t_bvh *bvh, t_object_geom *objects, int start, int end)
 {
 	int			mid;
 	uint32_t	node_i;

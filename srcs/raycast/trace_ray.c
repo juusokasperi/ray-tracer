@@ -1,15 +1,18 @@
 #include "mini_rt.h"
 #include "material_utils.h"
+#include "structs.h"
 #include "thread_tile_inline.h"
 
-static void prepare_surface(t_surface *surf, t_ray ray, t_object *closest, float t)
+static void prepare_surface(t_surface *surf, t_ray ray, t_object_geom *geom,
+			float t, t_scene *scene)
 {
-	surf->obj = closest;
+	surf->geom = geom;
+	surf->mat = &scene->materials[geom->mat_idx];
 	surf->point = get_point(ray, t);
 	surf->view_dir = ray.direction;
 	surf->ray_origin = ray.origin;
-	surf->normal = calculate_normal(ray.direction, surf->point, closest);
-	closest->color = get_object_color(closest, surf->point);
+	surf->normal = calculate_normal(ray.direction, surf->point, geom);
+	surf->mat->color = get_object_color(geom, surf->mat, surf->point);
 }
 
 static void adjust_normal_and_eta(t_vector ray_dir, t_vector *normal, 
@@ -37,7 +40,7 @@ static bool should_reflect(t_vector ray_dir, t_vector normal,
 	return (cannot_refract || fresnel(cos_theta, eta) > random_float(seed));
 }
 
-static t_ray handle_glass(t_ray ray, t_surface surf, t_object closest,
+static t_ray handle_glass(t_ray ray, t_surface *surf,
 						  t_vector *throughput, unsigned int *seed)
 {
 	t_vector surface_color;
@@ -45,19 +48,18 @@ static t_ray handle_glass(t_ray ray, t_surface surf, t_object closest,
 	t_vector normal;
 	t_vector r_dir;
 
-	surface_color = rgb_to_vec_norm(closest.color);
+	surface_color = rgb_to_vec_norm(surf->mat->color);
 	*throughput = vec_mul(*throughput, surface_color);
-	normal = surf.normal;
-	adjust_normal_and_eta(ray.direction, &normal, closest.refraction_index, &eta);
+	normal = surf->normal;
+	adjust_normal_and_eta(ray.direction, &normal, surf->mat->refraction_index, &eta);
 	if (should_reflect(ray.direction, normal, eta, seed))
 		r_dir = reflect_dir(ray.direction, normal);
 	else
 		r_dir = refract_vec(ray.direction, normal, eta);
-	return (make_ray(surf.point, apply_glossiness(r_dir, closest.glossiness, seed)));
+	return (make_ray(surf->point, apply_glossiness(r_dir, surf->mat->glossiness, seed)));
 }
 
-static t_ray	handle_opaque(t_data *data, t_ray ray, t_surface surf,
-						t_object obj, t_vector *throughput,
+static t_ray	handle_opaque(t_data *data, t_ray ray, t_surface *surf, t_vector *throughput,
 						t_vector *accum, bool *done, unsigned int *seed)
 {
 	t_rgb		direct_rgb;
@@ -65,20 +67,20 @@ static t_ray	handle_opaque(t_data *data, t_ray ray, t_surface surf,
 	t_vector	diffuse;
 	t_vector	dir;
 
-	direct_rgb = calculate_color(data, &surf, seed);
+	direct_rgb = calculate_color(data, surf, seed);
 	direct_light = rgb_to_vec(direct_rgb);
-	diffuse = vector_multiply(direct_light, 1.0f - obj.reflectivity);
+	diffuse = vector_multiply(direct_light, 1.0f - surf->mat->reflectivity);
 	diffuse = vec_mul(diffuse, *throughput);
 	*accum = vector_add(*accum, diffuse);
-	if (obj.reflectivity < BIGGER_EPSILON)
+	if (surf->mat->reflectivity < BIGGER_EPSILON)
 	{
 		*done = true;
 		return (ray);
 	}
-	*throughput = vector_multiply(*throughput, obj.reflectivity);
-	*throughput = vec_mul(*throughput, rgb_to_vec_norm(obj.color));
-	dir = reflect_dir(ray.direction, surf.normal);
-	return (make_ray(surf.point, apply_glossiness(dir, obj.glossiness, seed)));
+	*throughput = vector_multiply(*throughput, surf->mat->reflectivity);
+	*throughput = vec_mul(*throughput, rgb_to_vec_norm(surf->mat->color));
+	dir = reflect_dir(ray.direction, surf->normal);
+	return (make_ray(surf->point, apply_glossiness(dir, surf->mat->glossiness, seed)));
 }
 
 static bool russian_roulette(t_vector *throughput, int depth, unsigned int *seed)
@@ -96,14 +98,14 @@ static bool russian_roulette(t_vector *throughput, int depth, unsigned int *seed
 
 t_rgb trace_ray(t_data *data, t_ray ray, int max_depth, unsigned int *seed)
 {
-	t_vector throughput;
-	t_vector accum_color;
-	t_object closest;
-	t_surface surf;
-	float t;
-	int depth;
-	bool done;
-	float max_intensity;
+	t_vector	 	throughput;
+	t_vector	 	accum_color;
+	t_object_geom 	closest;
+	t_surface 		surf;
+	float	 		t;
+	int				depth;
+	bool			done;
+	float			max_intensity;
 
 	throughput = vector(1.0f, 1.0f, 1.0f);
 	accum_color = vector(0.0f, 0.0f, 0.0f);
@@ -120,12 +122,12 @@ t_rgb trace_ray(t_data *data, t_ray ray, int max_depth, unsigned int *seed)
 		t = find_closest_intersection(ray, data, &closest);
 		if (closest.type == NONE)
 			break;
-		prepare_surface(&surf, ray, &closest, t);
+		prepare_surface(&surf, ray, &closest, t, &data->scene);
 		done = false;
-		if (closest.refraction_index > 0.0f)
-			ray = handle_glass(ray, surf, closest, &throughput, seed);
+		if (surf.mat->refraction_index > 0.0f)
+			ray = handle_glass(ray, &surf, &throughput, seed);
 		else
-			ray = handle_opaque(data, ray, surf, closest, &throughput, 
+			ray = handle_opaque(data, ray, &surf, &throughput, 
 								&accum_color, &done, seed);
 		if (done || russian_roulette(&throughput, depth, seed))
 			break;

@@ -40,7 +40,7 @@ static bool	process_identifier(char *identifier, t_line_context *ctx)
 	return (result);
 }
 
-static bool	parse_line(char *line, t_data *data)
+static bool	parse_line(char *line, t_data *data, int mat_idx)
 {
 	Arena			*a;
 	t_line_context	ctx;
@@ -55,6 +55,7 @@ static bool	parse_line(char *line, t_data *data)
 	ctx.color_2 = rgb(225, 225, 225);
 	ctx.is_checkered = false;
 	ctx.idx = 0;
+	ctx.mat_idx = mat_idx;
 	ctx.line = line;
 	ctx.data = data;
 	if (!parse_identifier(a, line, &identifier, &ctx))
@@ -164,6 +165,7 @@ bool	parse_scene(const char *filename, t_data *data)
 	char	**lines;
 	bool	result;
 	ArenaTemp	temp;
+	int		mat_idx;
 
 	temp = arena_temp_begin(&data->arena);
 	if (!count_scene_elements(filename, data))
@@ -175,12 +177,14 @@ bool	parse_scene(const char *filename, t_data *data)
 	result = true;
 	if (!arena_read_file(&data->arena, fd, &lines))
 		return (false);
+	mat_idx = 0;
 	while (*lines && result)
 	{
 		if (!trim_line(&data->arena, lines))
 			return (false);
-		result = parse_line(*lines, data);
+		result = parse_line(*lines, data, mat_idx);
 		lines++;
+		mat_idx++;
 	}
 	if (!result)
 		return (false);

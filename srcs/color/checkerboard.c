@@ -11,36 +11,33 @@
 /* ************************************************************************** */
 
 #include "mini_rt.h"
+#include "structs.h"
 
 static bool		checkerboard_sphere(t_point point,
 					t_vector center, float scale);
-static bool		checkerboard_cylinder(t_cylinder cyl, float scale);
-static bool		checkerboard_cone(t_cone cone, float scale);
+static bool		checkerboard_cylinder(t_cylinder cyl, t_point world_hit, float scale);
+static bool		checkerboard_cone(t_cone cone, t_point world_hit, float scale);
 static bool		checkerboard_plane(t_point point, float scale);
+static t_point	get_local_hit(t_point world_hit, t_cylinder cyl);
 
 /*
 	Applies checkerboard pattern to an object based on the type of the object.
 */
 
-t_rgb	get_object_color(const t_object *obj, t_point hit_point)
+t_rgb	get_object_color(t_object_geom *geom, t_object_mat *mat, t_point world_hit)
 {
     bool is_even;
 
-    // If not checkered, just return the base color immediately
-    if (!obj->is_checkered)
-        return (obj->color);
-
-    // Reuse your existing static logic (checkerboard_sphere, etc.)
-    if (obj->type == SPHERE)
-        is_even = checkerboard_sphere(hit_point, obj->data.sphere.center, obj->checkerboard.scale);
-    else if (obj->type == PLANE)
-        is_even = checkerboard_plane(hit_point, obj->checkerboard.scale);
-    else if (obj->type == CYLINDER)
-        is_even = checkerboard_cylinder(obj->data.cylinder, obj->checkerboard.scale);
+    if (geom->type == SPHERE)
+        is_even = checkerboard_sphere(world_hit, geom->data.sphere.center, mat->ck_scale);
+    else if (geom->type == PLANE)
+        is_even = checkerboard_plane(world_hit, mat->ck_scale);
+    else if (geom->type == CYLINDER)
+        is_even = checkerboard_cylinder(geom->data.cylinder, world_hit, mat->ck_scale);
     else
-        is_even = checkerboard_cone(obj->data.cone, obj->checkerboard.scale);
+        is_even = checkerboard_cone(geom->data.cone, world_hit, mat->ck_scale);
 
-    return (is_even ? obj->checkerboard.color_2 : obj->checkerboard.color_1);
+    return (is_even ? mat->color_2 : mat->color);
 }
 
 /*
@@ -80,13 +77,13 @@ static bool	checkerboard_sphere(t_point point, t_vector center, float scale)
 	If on the cone surface, maps using angular position around the cone
 		and height along the cone axis.
 */
-static bool	checkerboard_cone(t_cone cone, float scale)
+static bool	checkerboard_cone(t_cone cone, t_point world_hit, float scale)
 {
 	float	theta;
 	int		xy[2];
 	t_point	point;
 
-	point = cone.local_hit;
+	point = get_local_hit(world_hit, cone);
 	if (fabsf(point.y + cone.height) < SHADOW_EPSILON)
 	{
 		xy[0] = (int)floorf((point.x / cone.radius) * (scale / 1.5f));
@@ -108,14 +105,14 @@ static bool	checkerboard_cone(t_cone cone, float scale)
 	If hit on the cylindrical surface; map using the angular position
 	around the cylinder and height along the axis.
 */
-static bool	checkerboard_cylinder(t_cylinder cyl, float scale)
+static bool	checkerboard_cylinder(t_cylinder cyl, t_point world_hit, float scale)
 {
 	float	height;
 	int		xy[2];
 	float	theta;
 	t_point	point;
 
-	point = cyl.local_hit;
+	point = get_local_hit(world_hit, cyl);
 	height = cyl.height / 2.0f;
 	if (fabsf(point.y - height) < SHADOW_EPSILON
 		|| fabsf(point.y + height) < SHADOW_EPSILON)
@@ -132,4 +129,18 @@ static bool	checkerboard_cylinder(t_cylinder cyl, float scale)
 		xy[1] = (int)floorf(((point.y + height) / cyl.height) * scale);
 	}
 	return ((xy[0] + xy[1]) % 2 == 0);
+}
+
+static t_point get_local_hit(t_point world_hit, t_cylinder cyl)
+{
+    t_point local_hit = vector_subtract(world_hit, cyl.center);
+    t_vector rot_axis = vector_cross(vector(0, 1, 0), cyl.axis);
+    float magnitude = vector_magnitude(rot_axis);
+    if (magnitude > EPSILON)
+    {
+        vector_normalize(&rot_axis);
+        float angle = acosf(vector_dot(vector(0, 1, 0), cyl.axis));
+        local_hit = rotate_vector(local_hit, rot_axis, -angle);
+    }
+    return (local_hit);
 }

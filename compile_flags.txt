@@ -1,0 +1,6 @@
+-std=c11
+-Iincs
+-IMLX42/include
+-Wall
+-Wextra
+-Werror

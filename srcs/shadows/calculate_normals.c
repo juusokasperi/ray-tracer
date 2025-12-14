@@ -61,7 +61,7 @@ static t_point	cone_normal(t_point hit_point, t_cone *cone)
 }
 
 t_point	calculate_normal(t_vector view_direction,
-		t_point hit_point, t_object *obj)
+		t_point hit_point, t_object_geom *obj)
 {
 	t_point	surface_normal;
 

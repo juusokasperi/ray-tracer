@@ -1,6 +1,8 @@
 #ifndef THREAD_TILE_INLINE_H
 # define THREAD_TILE_INLINE_H
 
+# include "mini_rt.h"
+
 static inline float random_float(unsigned int *state)
 {
 	unsigned int result;

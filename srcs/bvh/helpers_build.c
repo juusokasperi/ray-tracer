@@ -37,7 +37,7 @@ int	get_largest_axis(t_aabb_bounds *bounds)
 /*
 	Calculates center point for each axis in AABB
 */
-static t_vector	get_object_centroid(t_object *obj)
+static t_vector	get_object_centroid(t_object_geom *obj)
 {
 	t_aabb_bounds	bounds;
 	t_vector		centroid;
@@ -52,7 +52,7 @@ static t_vector	get_object_centroid(t_object *obj)
 /*
 	Returns the center point of specified axis
 */
-float	get_centroid_info(t_object *obj, int axis)
+float	get_centroid_info(t_object_geom *obj, int axis)
 {
 	t_vector	centroid;
 
@@ -65,16 +65,16 @@ float	get_centroid_info(t_object *obj, int axis)
 		return (centroid.z);
 }
 
-void	swap_objects(t_object *obj_1, t_object *obj_2)
+void	swap_objects(t_object_geom *obj_1, t_object_geom *obj_2)
 {
-	t_object	temp;
+	t_object_geom	temp;
 
 	temp = *obj_1;
 	*obj_1 = *obj_2;
 	*obj_2 = temp;
 }
 
-t_aabb_bounds	calculate_bounds(t_object *objects, int start, int end)
+t_aabb_bounds	calculate_bounds(t_object_geom *objects, int start, int end)
 {
 	t_aabb_bounds	obj_bounds;
 	t_aabb_bounds	bounds;

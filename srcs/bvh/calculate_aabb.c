@@ -112,7 +112,7 @@ static t_aabb_bounds	calculate_aabb_cone(const t_cone *cone)
 
 	@return AABB box
 */
-t_aabb_bounds	calculate_object_aabb(t_object *obj)
+t_aabb_bounds	calculate_object_aabb(t_object_geom *obj)
 {
 	if (obj->type == SPHERE)
 		return (calculate_aabb_sphere(&obj->data.sphere));

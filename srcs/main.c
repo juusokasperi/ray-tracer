@@ -61,7 +61,8 @@ int	main(int argc, char **argv)
 	t_data		data;
 	char		*scene_file;
 
-	printf("Size of object is: %zu\n", sizeof(t_object));
+	printf("Size of object geom is: %zu\n", sizeof(t_object_geom));
+	printf("Size of object mat is: %zu\n", sizeof(t_object_mat));
 
 	memset(&data, 0, sizeof(t_data));
 	data.arena = arena_init(PROT_READ | PROT_WRITE);

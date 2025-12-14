@@ -15,7 +15,7 @@
 static float	sphere_ray_intersect(t_ray ray, t_sphere sphere);
 static float	plane_ray_intersect(t_ray ray, t_plane plane);
 
-float	ray_intersect(t_ray ray, t_object *object)
+float	ray_intersect(t_ray ray, t_object_geom *object)
 {
 	if (object->type == SPHERE)
 		return (sphere_ray_intersect(ray, object->data.sphere));

@@ -12,13 +12,13 @@
 
 #include "mini_rt.h"
 
-static bool	is_point_inside(t_point point, t_object *obj);
+static bool	is_point_inside(t_point point, t_object_geom *obj);
 
 /*
 	If f.ex. camera is inside a sphere and the light source is outside it,
 	returns 'false' and no further checking for this light source is needed.
 */
-bool	light_visible(t_vector cam_pos, t_vector light_pos, t_object *obj)
+bool	light_visible(t_vector cam_pos, t_vector light_pos, t_object_geom *obj)
 {
 	return (is_point_inside(cam_pos, obj) == is_point_inside(light_pos, obj));
 }
@@ -94,7 +94,7 @@ static bool	is_point_inside_sphere(t_point point, t_sphere *sphere)
 		- SHADOW_EPSILON);
 }
 
-static bool	is_point_inside(t_point point, t_object *obj)
+static bool	is_point_inside(t_point point, t_object_geom *obj)
 {
 	if (obj->type == PLANE)
 		return (false);

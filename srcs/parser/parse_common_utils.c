@@ -30,13 +30,13 @@ bool	validate_parts_count(char **parts, int expected_count, char *obj_name)
 	return (true);
 }
 
-bool	validate_and_init_object(t_data *data, t_object **obj,
-		char **parts, t_shape type)
+bool	validate_and_init_object(t_data *data, t_object_geom **obj_geom,
+		t_object_mat **obj_mat, char **parts, t_shape type)
 {
 	int		expected_count;
 	char	*obj_type;
 
-	if (!data || !obj || !parts)
+	if (!data || !obj_geom || !obj_mat || !parts)
 		return (false);
 	expected_count = 3;
 	if (type == CYLINDER || type == CONE)
@@ -54,14 +54,14 @@ bool	validate_and_init_object(t_data *data, t_object **obj,
 	if (!validate_parts_count(parts, expected_count, obj_type))
 		return (false);
 	if (type == PLANE)
-		*obj = &data->scene.planes[data->scene.plane_count];
+		*obj_geom = &data->scene.plane_geometry[data->scene.plane_count];
 	else
-		*obj = &data->scene.objects[data->scene.object_count];
-	(*obj)->type = type;
-	(*obj)->shininess = 50.0f;
-    (*obj)->refraction_index = 0.0f;
-    (*obj)->glossiness = 0.0f;
-	(*obj)->reflectivity = 0.0f;
+		*obj_geom = &data->scene.geometry[data->scene.object_count];
+	(*obj_geom)->type = type;
+	(*obj_mat)->shininess = 50.0f;
+    (*obj_mat)->refraction_index = 0.0f;
+    (*obj_mat)->glossiness = 0.0f;
+	(*obj_mat)->reflectivity = 0.0f;
 	return (true);
 }
 

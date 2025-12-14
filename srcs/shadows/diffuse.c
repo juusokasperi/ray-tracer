@@ -22,7 +22,7 @@ static inline t_rgb	diffuse_term(t_light l, t_surface *s, float ndl, float eff)
 {
 	t_rgb	d;
 
-	d = rgb_scalar_multiply(s->obj->color, eff * ndl);
+	d = rgb_scalar_multiply(s->mat->color, eff * ndl);
 	return (rgb_scalar(d, l.color));
 }
 
@@ -32,13 +32,13 @@ static inline t_rgb	specular_term(t_light l, t_surface *s,
 	t_vector	r;
 	float		rdv;
 
-	if (s->obj->shininess <= 0.f)
+	if (s->mat->shininess <= 0.f)
 		return ((t_rgb){0, 0, 0});
 	r = vector_subtract(vector_multiply(s->normal, 2.0f * ndl), lr.direction);
 	rdv = vector_dot(r, vector_multiply(s->view_dir, -1.0f));
 	if (rdv <= 0)
 		return ((t_rgb){0, 0, 0});
-	return (rgb_scalar_multiply(l.color, eff * powf(rdv, s->obj->shininess)));
+	return (rgb_scalar_multiply(l.color, eff * powf(rdv, s->mat->shininess)));
 }
 
 t_rgb	calculate_light_contribution(t_light light, t_surface *surf,
@@ -61,7 +61,7 @@ t_rgb	calculate_light_contribution(t_light light, t_surface *surf,
 Calculates the color that is present always whether the object is in
 shadow or not.
 */
-t_rgb	calculate_ambient(t_object *obj, t_ambient ambient)
+t_rgb	calculate_ambient(t_object_mat *obj, t_ambient ambient)
 {
 	t_rgb	res;
 

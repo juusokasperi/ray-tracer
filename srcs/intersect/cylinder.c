@@ -38,8 +38,6 @@ float	cylinder_ray_intersect(t_ray ray, t_cylinder *cylinder)
 	while (++i < 3)
 		if ((t[i] > 0 && t[i] < min) || (min == -1 && t[i] > 0))
 			min = t[i];
-	if (min > 0)
-		cylinder->local_hit = get_point(ray, min);
 	return (min);
 }
 

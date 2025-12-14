@@ -148,40 +148,46 @@ typedef struct s_cylinder
 	t_vector	axis;
 	float		radius;
 	float		height;
-	t_point		local_hit;
 	float		inv_height;
 }	t_cylinder;
 
 typedef struct s_cylinder	t_cone;
 
-typedef struct s_object
+typedef struct s_object_geom
 {
-	t_shape			type;
-	t_rgb			color;
-	bool			is_checkered;
-	t_checkerboard	checkerboard;
-	float			shininess;
-	float			glossiness;
-	float			refraction_index;
-	float			reflectivity;
-	union u_data
+	t_shape		type;
+	uint32_t	mat_idx;
+	union u_geom_data
 	{
 		t_sphere	sphere;
 		t_plane		plane;
 		t_cylinder	cylinder;
 		t_cone		cone;
-	}	data;
-	uint32_t		pad;
-}	__attribute__((aligned(16))) t_object;
+	} data;
+} __attribute__((aligned(64))) t_object_geom;
+
+typedef struct s_object_mat
+{
+	t_rgb	color;
+	bool	is_checkered;
+	uint8_t	padding[3];
+	t_rgb	color_2;
+	float	ck_scale;
+	float	shininess;
+	float	glossiness;
+	float	refraction_index;
+	float	reflectivity;
+}	__attribute__((aligned(16))) t_object_mat;
 
 typedef struct s_scene
 {
-	t_object	*objects;
-	int			object_count;
-	t_object	*planes;
-	int			plane_count;
-	t_light		*lights;
-	int			light_count;
+	t_object_geom	*geometry;
+	t_object_mat	*materials;
+	int				object_count;
+	t_object_geom	*plane_geometry;
+	int				plane_count;
+	t_light			*lights;
+	int				light_count;
 }	t_scene;
 
 typedef struct s_data		t_data;
@@ -244,18 +250,20 @@ typedef struct s_data
 
 typedef struct s_obj_t
 {
-	float		min_t;
-	t_object	*closest;
-	t_object	*objects;
+	float			min_t;
+	t_object_geom	*closest;
+	t_object_geom	*objects;
 }	t_obj_t;
 
 typedef struct s_surface_info
 {
-	t_point		point;
-	t_vector	normal;
-	t_vector	view_dir;
-	t_point		ray_origin;
-	t_object	*obj;
+	t_point			point;
+	t_vector		normal;
+	t_vector		view_dir;
+	t_point			ray_origin;
+	t_object_geom	*geom;
+	t_object_mat	*mat;
+	int				geom_idx;
 }	t_surface;
 
 typedef struct s_light_calc

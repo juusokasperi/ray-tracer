@@ -1,9 +1,8 @@
 #ifndef MATERIAL_UTILS_H
 # define MATERIAL_UTILS_H
 
-#include "mini_rt.h"
+# include "structs.h"
 
-// Random sampling
 t_vector	random_in_unit_sphere(unsigned int *seed);
 t_vector	apply_glossiness(t_vector dir, float glossiness, unsigned int *seed);
 

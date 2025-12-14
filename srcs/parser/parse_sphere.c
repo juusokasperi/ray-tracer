@@ -15,25 +15,28 @@
 bool	parse_sphere(char *line, t_line_context *ctx)
 {
 	char			**parts;
-	t_object		*sphere;
+	t_object_geom	*geom;
+	t_object_mat	*mat;
 	t_data			*data;
 	float			diameter;
 	Arena			*a;
 
 	data = ctx->data;
 	a = &data->arena;
+	mat = &data->scene.materials[ctx->mat_idx];
 	if (!line || !data || !validate_object_count(data))
 		return (false);
 	parts = arena_split_isspace(a, line);
-	if (!validate_and_init_object(data, &sphere, parts, SPHERE)
-		|| !parse_object_position(a, parts, &sphere->data.sphere.center)
+	if (!validate_and_init_object(data, &geom, &mat, parts, SPHERE)
+		|| !parse_object_position(a, parts, &geom->data.sphere.center)
 		|| !parse_positive_float(parts, 1, &diameter,
 			"Sphere diameter must be positive")
-		|| !parse_object_color(a, parts[2], sphere, ctx->is_checkered,
+		|| !parse_object_color(a, parts[2], mat, ctx->is_checkered,
 			&ctx->color_2))
 		return (false);
-	sphere->data.sphere.radius = diameter / 2;
-	apply_object_modifiers(sphere, ctx);
+	geom->data.sphere.radius = diameter / 2;
+	geom->mat_idx = ctx->mat_idx;
+	apply_object_modifiers(mat, ctx);
 	data->scene.object_count++;
 	return (true);
 }
