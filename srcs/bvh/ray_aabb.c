@@ -92,7 +92,7 @@ static bool	check_node_intersection(t_ray ray, t_bvh_node *node, float min_t)
 {
 	float	t[2];
 
-	if (!ray_aabb_intersect(&ray, node->bounds, &t[0], &t[1]))
+	if (!ray_aabb_intersect(&ray, &node->bounds, &t[0], &t[1]))
 		return (false);
 	if (t[1] < EPSILON)
 		return (false);

@@ -15,7 +15,7 @@
 /*
 	@return Boolean stating whether the ray intersect the AABB.
 */
-bool	ray_aabb_intersect(t_ray *ray, t_aabb_bounds bounds,
+bool	ray_aabb_intersect(t_ray *ray, t_aabb_bounds *bounds,
 	float *t_enter, float *t_exit)
 {
 	float	t0;
@@ -23,16 +23,16 @@ bool	ray_aabb_intersect(t_ray *ray, t_aabb_bounds bounds,
 	float	t_min;
 	float	t_max;
 
-	t0 = (bounds.min.x - ray->origin.x) * ray->inv_dir.x;
-	t1 = (bounds.max.x - ray->origin.x) * ray->inv_dir.x;
+	t0 = (bounds->min.x - ray->origin.x) * ray->inv_dir.x;
+	t1 = (bounds->max.x - ray->origin.x) * ray->inv_dir.x;
 	t_min = fminf(t0, t1);
 	t_max = fmaxf(t0, t1);
-	t0 = (bounds.min.y - ray->origin.y) * ray->inv_dir.y;
-	t1 = (bounds.max.y - ray->origin.y) * ray->inv_dir.y;
+	t0 = (bounds->min.y - ray->origin.y) * ray->inv_dir.y;
+	t1 = (bounds->max.y - ray->origin.y) * ray->inv_dir.y;
 	t_min = fmaxf(t_min, fminf(t0, t1));
 	t_max = fminf(t_max, fmaxf(t0, t1));
-	t0 = (bounds.min.z - ray->origin.z) * ray->inv_dir.z;
-	t1 = (bounds.max.z - ray->origin.z) * ray->inv_dir.z;
+	t0 = (bounds->min.z - ray->origin.z) * ray->inv_dir.z;
+	t1 = (bounds->max.z - ray->origin.z) * ray->inv_dir.z;
 	t_min = fmaxf(t_min, fminf(t0, t1));
 	t_max = fminf(t_max, fmaxf(t0, t1));
 	*t_enter = t_min;

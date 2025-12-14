@@ -116,4 +116,9 @@ static inline t_vector	rotate_vector(t_vector v, t_vector k, float angle)
 	return (res);
 }
 
+static inline t_vector vec_mul(t_vector a, t_vector b)
+{
+	return (vector(a.x * b.x, a.y * b.y, a.z * b.z));
+}
+
 #endif

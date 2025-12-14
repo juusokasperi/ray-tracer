@@ -17,15 +17,15 @@
 
 	@return Integer (0,1,2) representing the largest axis.
 */
-int	get_largest_axis(t_aabb_bounds bounds)
+int	get_largest_axis(t_aabb_bounds *bounds)
 {
 	float	x_extent;
 	float	y_extent;
 	float	z_extent;
 
-	x_extent = bounds.max.x - bounds.min.x;
-	y_extent = bounds.max.y - bounds.min.y;
-	z_extent = bounds.max.z - bounds.min.z;
+	x_extent = bounds->max.x - bounds->min.x;
+	y_extent = bounds->max.y - bounds->min.y;
+	z_extent = bounds->max.z - bounds->min.z;
 	if (x_extent >= y_extent && x_extent >= z_extent)
 		return (X);
 	else if (y_extent >= x_extent && y_extent >= z_extent)
@@ -37,7 +37,7 @@ int	get_largest_axis(t_aabb_bounds bounds)
 /*
 	Calculates center point for each axis in AABB
 */
-static t_vector	get_object_centroid(t_object obj)
+static t_vector	get_object_centroid(t_object *obj)
 {
 	t_aabb_bounds	bounds;
 	t_vector		centroid;
@@ -52,7 +52,7 @@ static t_vector	get_object_centroid(t_object obj)
 /*
 	Returns the center point of specified axis
 */
-float	get_centroid_info(t_object obj, int axis)
+float	get_centroid_info(t_object *obj, int axis)
 {
 	t_vector	centroid;
 
@@ -79,10 +79,10 @@ t_aabb_bounds	calculate_bounds(t_object *objects, int start, int end)
 	t_aabb_bounds	obj_bounds;
 	t_aabb_bounds	bounds;
 
-	bounds = calculate_object_aabb(objects[start]);
+	bounds = calculate_object_aabb(&objects[start]);
 	while (++start <= end)
 	{
-		obj_bounds = calculate_object_aabb(objects[start]);
+		obj_bounds = calculate_object_aabb(&objects[start]);
 		bounds = aabb_union(bounds, obj_bounds);
 	}
 	return (bounds);

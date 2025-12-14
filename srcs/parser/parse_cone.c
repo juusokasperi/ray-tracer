@@ -25,6 +25,7 @@ static bool	parse_cone_attrs(Arena *a, char **parts, t_object *cone,
 			&ctx->color_2))
 		return (false);
 	cone->data.cone.radius /= 2.0;
+	cone->data.cone.inv_height = 1.0f / cone->data.cone.height;
 	apply_object_modifiers(cone, ctx);
 	return (true);
 }

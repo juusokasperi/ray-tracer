@@ -117,7 +117,7 @@ static bool	shadow_bvh(t_ray ray, t_data *data, float max_dist)
 	{
 		node_i = stack[--stack_ptr];
 		node = &data->bvh.nodes[node_i];
-		if (!ray_aabb_intersect(&ray, node->bounds, &t[0], &t[1])
+		if (!ray_aabb_intersect(&ray, &node->bounds, &t[0], &t[1])
 			|| t[1] < SHADOW_EPSILON || t[0] > max_dist)
 			continue ;
 		if (node->left_right == NO_CHILDREN

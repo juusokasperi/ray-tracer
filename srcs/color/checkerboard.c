@@ -21,26 +21,26 @@ static bool		checkerboard_plane(t_point point, float scale);
 /*
 	Applies checkerboard pattern to an object based on the type of the object.
 */
-void	check_checkerboard(t_object *obj, t_point point)
-{
-	bool			is_even;
-	t_checkerboard	*c;
 
-	if (obj->is_checkered == false)
-		return ;
-	c = &obj->checkerboard;
-	if (obj->type == SPHERE)
-		is_even = checkerboard_sphere(point, obj->data.sphere.center, c->scale);
-	else if (obj->type == CONE)
-		is_even = checkerboard_cone(obj->data.cone, c->scale);
-	else if (obj->type == CYLINDER)
-		is_even = checkerboard_cylinder(obj->data.cylinder, c->scale);
-	else
-		is_even = checkerboard_plane(point, c->scale);
-	if (is_even)
-		obj->color = c->color_2;
-	else
-		obj->color = c->color_1;
+t_rgb	get_object_color(const t_object *obj, t_point hit_point)
+{
+    bool is_even;
+
+    // If not checkered, just return the base color immediately
+    if (!obj->is_checkered)
+        return (obj->color);
+
+    // Reuse your existing static logic (checkerboard_sphere, etc.)
+    if (obj->type == SPHERE)
+        is_even = checkerboard_sphere(hit_point, obj->data.sphere.center, obj->checkerboard.scale);
+    else if (obj->type == PLANE)
+        is_even = checkerboard_plane(hit_point, obj->checkerboard.scale);
+    else if (obj->type == CYLINDER)
+        is_even = checkerboard_cylinder(obj->data.cylinder, obj->checkerboard.scale);
+    else
+        is_even = checkerboard_cone(obj->data.cone, obj->checkerboard.scale);
+
+    return (is_even ? obj->checkerboard.color_2 : obj->checkerboard.color_1);
 }
 
 /*

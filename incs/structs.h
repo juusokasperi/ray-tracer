@@ -53,6 +53,7 @@ typedef struct s_bvh_node
 	t_aabb_bounds	bounds;
 	uint32_t		left_right;
 	uint32_t		first_count;
+	uint32_t		pad[6];
 }	t_bvh_node;
 
 typedef struct s_bvh
@@ -148,6 +149,7 @@ typedef struct s_cylinder
 	float		radius;
 	float		height;
 	t_point		local_hit;
+	float		inv_height;
 }	t_cylinder;
 
 typedef struct s_cylinder	t_cone;
@@ -169,7 +171,8 @@ typedef struct s_object
 		t_cylinder	cylinder;
 		t_cone		cone;
 	}	data;
-}	t_object;
+	uint32_t		pad;
+}	__attribute__((aligned(16))) t_object;
 
 typedef struct s_scene
 {

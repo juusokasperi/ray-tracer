@@ -61,6 +61,8 @@ int	main(int argc, char **argv)
 	t_data		data;
 	char		*scene_file;
 
+	printf("Size of object is: %zu\n", sizeof(t_object));
+
 	memset(&data, 0, sizeof(t_data));
 	data.arena = arena_init(PROT_READ | PROT_WRITE);
 	data.frame.f_arena = arena_init(PROT_READ | PROT_WRITE);

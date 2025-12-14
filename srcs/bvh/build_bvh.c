@@ -63,12 +63,12 @@ static int	partition_object(t_object *objects, int start, int end, int axis)
 	int			i;
 
 	i = (start + end) / 2;
-	pivot_value = get_centroid_info(objects[i], axis);
+	pivot_value = get_centroid_info(&objects[i], axis);
 	swap_objects(&objects[i], &objects[end]);
 	i = start;
 	while (i < end)
 	{
-		value = get_centroid_info(objects[i], axis);
+		value = get_centroid_info(&objects[i], axis);
 		if (value < pivot_value)
 		{
 			swap_objects(&objects[i], &objects[start]);
@@ -93,11 +93,11 @@ static uint32_t	build_leaf_node(t_bvh *bvh, t_object *objects,
 	int				i;
 
 	node_i = bvh->node_count++;
-	bounds = calculate_object_aabb(objects[start]);
+	bounds = calculate_object_aabb(&objects[start]);
 	i = -1;
 	while (++i < count)
 	{
-		obj_bounds = calculate_object_aabb(objects[start + i]);
+		obj_bounds = calculate_object_aabb(&objects[start + i]);
 		bounds = aabb_union(bounds, obj_bounds);
 	}
 	bvh->nodes[node_i].bounds = bounds;
@@ -119,10 +119,10 @@ static uint32_t	build_two_object_node(t_bvh *bvh, t_object *objects, int start)
 	int				axis;
 
 	bounds = calculate_bounds(objects, start, start + 1);
-	axis = get_largest_axis(bounds);
+	axis = get_largest_axis(&bounds);
 	node_i = bvh->node_count++;
-	if (get_centroid_info(objects[start], axis)
-		> get_centroid_info(objects[start + 1], axis))
+	if (get_centroid_info(&objects[start], axis)
+		> get_centroid_info(&objects[start + 1], axis))
 		swap_objects(&objects[start], &objects[start + 1]);
 	left = build_leaf_node(bvh, objects, start, 1);
 	right = build_leaf_node(bvh, objects, start + 1, 1);
@@ -153,7 +153,7 @@ static uint32_t	build_bvh(t_bvh *bvh, t_object *objects, int start, int end)
 	node_i = bvh->node_count++;
 	bvh->nodes[node_i].bounds = calculate_bounds(objects, start, end);
 	mid = partition_object(objects, start, end,
-			get_largest_axis(bvh->nodes[node_i].bounds));
+			get_largest_axis(&bvh->nodes[node_i].bounds));
 	if (mid == start || mid == end)
 		mid = start + count / 2;
 	left = build_bvh(bvh, objects, start, mid);
