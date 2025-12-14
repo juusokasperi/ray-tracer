@@ -35,8 +35,13 @@ Other:
 ### Setting up scenes:
 
 - Each scene can have a maximum of 1 ambient light and a maximum of 1 cameras. The scenes can have any number of lights and objects.
-- An object can be set to be checkerboarded with adding the `:ck` and `:scale (0-20)` to it (e.g. `cy:ck:5`)
-- A light ratio must be between 0.0 - 1.0.
+- Object modifiers (e.g. `pl:ck:2:gl:0.5:sh:500:re:0.1:ri:5`)
+    - Checkerboard pattern `:ck:0-20`
+    - Glossiness ratio `:gl:0-1`
+    - Shininess ratio `:sh:0-1000`
+    - Refraction index `ri:1-5`
+    - Reflectivity `re:0-1`
+- A light ratio must be between 0.0 - 2.0.
 - Direction vectors need to be between -1, 1 and cannot be (0, 0, 0).
 - RGB values must be between 0 - 255.
 - Camera FOV must be between 0-180.
@@ -78,7 +83,7 @@ co	0,0,0	0,1,0 		10		10	255,255,100
 pl:ck:0.5 0,0,0 0,1,0 225,225,225/100,100,100
 
 # All modifiers for an object
-sp:ck:0.5:ri:3:re:1:gl:0.1:sh:500 0,0,0 16 225,225,225
+sp:ck:0.5:ri:3:re:1:gl:0.1:sh:500 0,0,0 16 225,225,225/100,100,100
 ```
 
 ### Example scenes:
