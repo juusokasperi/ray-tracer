@@ -40,12 +40,13 @@ static bool	process_identifier(char *identifier, t_line_context *ctx)
 	return (result);
 }
 
-static bool	parse_line(char *line, t_data *data, int mat_idx)
+static bool	parse_line(char *line, t_data *data, int *mat_idx)
 {
 	Arena			*a;
 	t_line_context	ctx;
 	char			*identifier;
 	bool			result;
+	bool			is_object;
 
 	a = &data->arena;
 	if (!line || line[0] == '\0' || line[0] == '#')
@@ -55,7 +56,7 @@ static bool	parse_line(char *line, t_data *data, int mat_idx)
 	ctx.color_2 = rgb(225, 225, 225);
 	ctx.is_checkered = false;
 	ctx.idx = 0;
-	ctx.mat_idx = mat_idx;
+	ctx.mat_idx = *mat_idx;
 	ctx.line = line;
 	ctx.data = data;
 	if (!parse_identifier(a, line, &identifier, &ctx))
@@ -63,7 +64,13 @@ static bool	parse_line(char *line, t_data *data, int mat_idx)
 		printf("Error\nInvalid identifier in line: %s\n", line);
 		return (false);
 	}
+	is_object = (strcmp(identifier, "sp") == 0)
+		|| (strcmp(identifier, "pl") == 0)
+		|| (strcmp(identifier, "cy") == 0)
+		|| (strcmp(identifier, "co") == 0);
 	result = process_identifier(identifier, &ctx);
+	if (result && is_object)
+		(*mat_idx)++;
 	return (result);
 }
 
@@ -182,9 +189,8 @@ bool	parse_scene(const char *filename, t_data *data)
 	{
 		if (!trim_line(&data->arena, lines))
 			return (false);
-		result = parse_line(*lines, data, mat_idx);
+		result = parse_line(*lines, data, &mat_idx);
 		lines++;
-		mat_idx++;
 	}
 	if (!result)
 		return (false);

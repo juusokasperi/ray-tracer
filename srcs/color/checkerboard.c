@@ -6,7 +6,7 @@
 /*   By: jrinta- <jrinta-@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:59:48 by jrinta-           #+#    #+#             */
-/*   Updated: 2025/05/19 18:50:01 by jrinta-          ###   ########.fr       */
+/*   Updated: 2025/12/14 23:23:19 by jrinta-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,20 @@ static t_point	get_local_hit(t_point world_hit, t_cylinder cyl);
 
 t_rgb	get_object_color(t_object_geom *geom, t_object_mat *mat, t_point world_hit)
 {
-    bool is_even;
+	bool is_even;
 
-    if (geom->type == SPHERE)
-        is_even = checkerboard_sphere(world_hit, geom->data.sphere.center, mat->ck_scale);
-    else if (geom->type == PLANE)
-        is_even = checkerboard_plane(world_hit, mat->ck_scale);
-    else if (geom->type == CYLINDER)
-        is_even = checkerboard_cylinder(geom->data.cylinder, world_hit, mat->ck_scale);
-    else
-        is_even = checkerboard_cone(geom->data.cone, world_hit, mat->ck_scale);
+	if (!mat->is_checkered)
+		return (mat->color);
+	if (geom->type == SPHERE)
+		is_even = checkerboard_sphere(world_hit, geom->data.sphere.center, mat->ck_scale);
+	else if (geom->type == PLANE)
+		is_even = checkerboard_plane(world_hit, mat->ck_scale);
+	else if (geom->type == CYLINDER)
+		is_even = checkerboard_cylinder(geom->data.cylinder, world_hit, mat->ck_scale);
+	else
+		is_even = checkerboard_cone(geom->data.cone, world_hit, mat->ck_scale);
 
-    return (is_even ? mat->color_2 : mat->color);
+	return (is_even ? mat->color_2 : mat->color);
 }
 
 /*
