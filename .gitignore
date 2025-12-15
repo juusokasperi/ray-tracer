@@ -3,3 +3,5 @@ miniRT
 miniRT_bonus
 .DS_Store
 MLX42/
+compile_commands.json
+.cache/
