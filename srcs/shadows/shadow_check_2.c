@@ -64,7 +64,7 @@ static bool	is_point_inside_cone(t_point point, const t_cone *cone)
 	t_vector4	closest_point;
 	t_vector4	perpendicular;
 	float		distance_sqrd;
-	float		normalized_height;
+	float		radius_at_height;
 
 	center_to_point = vector_subtract(point, cone->center);
 	project_to_axis = vector_dot(center_to_point, cone->axis);
@@ -74,8 +74,8 @@ static bool	is_point_inside_cone(t_point point, const t_cone *cone)
 			cone->center, vector_multiply(cone->axis, project_to_axis));
 	perpendicular = vector_subtract(point, closest_point);
 	distance_sqrd = vector_dot(perpendicular, perpendicular);
-	normalized_height = (project_to_axis + cone->height * 0.5f) / cone->inv_height;
-	return (distance_sqrd < (normalized_height * normalized_height) - SHADOW_EPSILON);
+	radius_at_height = (project_to_axis + cone->height * 0.5f) * cone->inv_height * cone->radius;
+	return (distance_sqrd < (radius_at_height * radius_at_height) - SHADOW_EPSILON);
 }
 
 /*
