@@ -48,7 +48,7 @@ static t_ray handle_glass(t_ray ray, t_surface *surf,
 	t_vector normal;
 	t_vector r_dir;
 
-	surface_color = rgb_to_vec_norm(surf->mat->color);
+	surface_color = rgb_to_vec_norm(surf->resolved_color);
 	*throughput = vec_mul(*throughput, surface_color);
 	normal = surf->normal;
 	adjust_normal_and_eta(ray.direction, &normal, surf->mat->refraction_index, &eta);

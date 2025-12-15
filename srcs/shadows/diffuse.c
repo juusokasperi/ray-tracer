@@ -22,7 +22,7 @@ static inline t_rgb	diffuse_term(t_light l, t_surface *s, float ndl, float eff)
 {
 	t_rgb	d;
 
-	d = rgb_scalar_multiply(s->mat->color, eff * ndl);
+	d = rgb_scalar_multiply(s->resolved_color, eff * ndl);
 	return (rgb_scalar(d, l.color));
 }
 
