@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "mini_rt.h"
+#include "structs.h"
 
 /*
 	To_hit		is a vector pointing from the cylinder center to the hit_point.
@@ -50,14 +51,18 @@ static t_point	cone_normal(t_point hit_point, t_cone *cone)
 {
 	t_vector4	to_hit;
 	float		proj;
-	t_point		axis_point;
+	t_vector4	radial_dir;
+	t_vector4	normal;
+	float		k;
 
 	to_hit = vector_subtract(hit_point, cone->center);
 	proj = vector_dot(to_hit, cone->axis);
-	if (fabsf(proj - cone->height) < EPSILON)
-		return (vector_multiply(cone->axis, -1));
-	axis_point = vector_add(cone->center, vector_multiply(cone->axis, proj));
-	return (vector_subtract(hit_point, axis_point));
+	radial_dir = vector_subtract(to_hit, vector_multiply(cone->axis, proj));
+	vector_normalize(&radial_dir);
+	k = cone->radius / cone->height;
+	normal = vector_subtract(radial_dir, vector_multiply(cone->axis, k));
+	vector_normalize(&normal);
+	return (normal);
 }
 
 t_point	calculate_normal(t_vector4 view_direction,
