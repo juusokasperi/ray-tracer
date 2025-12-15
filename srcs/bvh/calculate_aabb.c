@@ -26,6 +26,8 @@ static t_aabb_bounds	calculate_aabb_sphere(t_sphere *sphere)
 	return (bounds);
 }
 
+/*
+-- Unused, we don't add planes to BVH --
 static t_aabb_bounds	calculate_aabb_plane(const t_plane *plane)
 {
 	float			limit;
@@ -53,6 +55,7 @@ static t_aabb_bounds	calculate_aabb_plane(const t_plane *plane)
 	}
 	return (bounds);
 }
+*/
 
 static t_aabb_bounds	calculate_aabb_cylinder(const t_cylinder *cyl)
 {
@@ -117,10 +120,10 @@ t_aabb_bounds	calculate_object_aabb(t_object_geom *obj)
 {
 	if (obj->type == SPHERE)
 		return (calculate_aabb_sphere(&obj->data.sphere));
-	else if (obj->type == PLANE)
-		return (calculate_aabb_plane(&obj->data.plane));
 	else if (obj->type == CONE)
 		return (calculate_aabb_cone(&obj->data.cone));
 	else
 		return (calculate_aabb_cylinder(&obj->data.cylinder));
 }
+// else if (obj->type == PLANE)
+//		return (calculate_aabb_plane(&obj->data.plane));
