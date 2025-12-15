@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "mini_rt.h"
+#include <stdint.h>
 
 static bool	shadow_bvh(t_ray ray, t_data *data, float max_dist);
 
@@ -49,43 +50,6 @@ bool	in_shadow(t_ray light_ray, t_data *data, float max_dist)
 }
 
 /*
-	Checks for intersections between the ray and object(s) in the AABB.
-*/
-static bool	shadow_leaf_node(t_bvh_node *node, t_ray ray, t_object_geom *objects,
-			float max_dist)
-{
-	float		t;
-	uint16_t	first;
-	uint16_t	count;
-	uint16_t	i;
-
-	first = get_first(node->first_count);
-	count = get_count(node->first_count);
-	i = -1;
-	while (++i < count)
-	{
-		t = ray_intersect(ray, &objects[first + i]);
-		if (t > 0 && t < max_dist)
-			return (true);
-	}
-	return (false);
-}
-
-static void	add_children_to_stack(uint32_t left_right,
-	uint32_t stack[64], int *ptr)
-{
-	uint16_t	left;
-	uint16_t	right;
-
-	left = get_left_child(left_right);
-	right = get_right_child(left_right);
-	if (left != NO_CHILD)
-		stack[(*ptr)++] = left;
-	if (right != NO_CHILD)
-		stack[(*ptr)++] = right;
-}
-
-/*
 	Traverses the BVH tree in a non-recursive fashion using a stack.
 
 	Init: pushing BVH node index 0 into the stack, incrementing
@@ -109,7 +73,8 @@ static bool	shadow_bvh(t_ray ray, t_data *data, float max_dist)
 	uint32_t	node_i;
 	uint32_t	stack[64];
 	int			stack_ptr;
-	float		t[2];
+	float		t[3];
+	uint16_t	first_count[2];
 
 	stack_ptr = 0;
 	stack[stack_ptr++] = 0;
@@ -120,11 +85,21 @@ static bool	shadow_bvh(t_ray ray, t_data *data, float max_dist)
 		if (!ray_aabb_intersect(&ray, &node->bounds, &t[0], &t[1])
 			|| t[1] < SHADOW_EPSILON || t[0] > max_dist)
 			continue ;
-		if (node->left_right == NO_CHILDREN
-			&& shadow_leaf_node(node, ray, data->scene.geometry, max_dist))
-			return (true);
+		if (node->left_right == NO_CHILDREN)
+		{
+			first_count[0] = get_first(node->first_count);
+			first_count[1] = get_count(node->first_count);
+
+			for (uint16_t i = 0; i < first_count[1]; ++i)
+			{
+				t[2] = ray_intersect(ray, &data->scene.geometry[first_count[0] + i]);
+				if (t[2] > SHADOW_EPSILON && t[2] < max_dist)
+					return (true);
+			}
+		}
 		else
-			add_children_to_stack(node->left_right, stack, &stack_ptr);
+			push_children_sorted(&data->bvh, ray, node->left_right, 
+                               stack, &stack_ptr);
 	}
 	return (false);
 }

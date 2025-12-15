@@ -42,6 +42,9 @@ uint32_t		pack_children(uint16_t left, uint16_t right);
 //	ray_aabb_utils.c
 bool			ray_aabb_intersect(t_ray *ray, t_aabb_bounds *bounds,
 					float *t_enter, float *t_exit);
+void			push_children_sorted(t_bvh *bvh, t_ray ray,
+					uint32_t left_right, uint32_t *stack, int *stack_ptr);
+
 //	ray_aabb.c
 float			find_closest_intersection(t_ray ray, t_data *data,
 					t_object_geom *closest);

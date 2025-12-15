@@ -89,6 +89,7 @@ void			loop_hook(void *param);
 
 //	intersect/intersect.c
 float			ray_intersect(t_ray ray, t_object_geom *object);
+t_ray 			transform_ray(t_ray ray, t_point center, t_vector4 axis);
 //	intersect/cylinder.c
 float			cylinder_ray_intersect(t_ray ray, t_cylinder *cylinder);
 //	intersect/cone.c && cone_2.c

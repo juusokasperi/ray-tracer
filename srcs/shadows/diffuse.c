@@ -12,6 +12,25 @@
 
 #include "mini_rt.h"
 
+static inline float	fast_pow(float base, float power)
+{
+	float	result;
+	int		exp;
+
+	if (base <= 0.0f)
+		return (0.0f);
+	result = 1.0f;
+	exp = (int)power;
+	while (exp > 0)
+	{
+		if (exp % 2 == 1)
+			result *= base;
+		base *= base;
+		exp /= 2;
+	}
+	return (result);
+}
+
 static inline float light_atten(float d)
 {
 	return (1.0f / (1.0f + 0.001f
@@ -38,7 +57,7 @@ static inline t_rgb	specular_term(t_light l, t_surface *s,
 	rdv = vector_dot(r, vector_multiply(s->view_dir, -1.0f));
 	if (rdv <= 0)
 		return ((t_rgb){0, 0, 0});
-	return (rgb_scalar_multiply(l.color, eff * powf(rdv, s->mat->shininess)));
+	return (rgb_scalar_multiply(l.color, eff * fast_pow(rdv, s->mat->shininess)));
 }
 
 t_rgb	calculate_light_contribution(t_light light, t_surface *surf,

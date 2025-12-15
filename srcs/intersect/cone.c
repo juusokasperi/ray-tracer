@@ -29,7 +29,7 @@ float	cone_ray_intersect(t_ray ray, t_cone *cone)
 	int		i;
 	float	min;
 
-	ray = transform_ray_cone(ray, *cone);
+	ray = transform_ray(ray, cone->center, cone->axis);
 	t[0] = infinite_cone_intersection(ray, *cone);
 	t[1] = disk_intersection(ray, *cone);
 	min = -1;

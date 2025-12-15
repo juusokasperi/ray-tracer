@@ -135,14 +135,19 @@ static bool	checkerboard_cylinder(t_cylinder cyl, t_point world_hit, float scale
 
 static t_point get_local_hit(t_point world_hit, t_cylinder cyl)
 {
-    t_point local_hit = vector_subtract(world_hit, cyl.center);
-    t_vector4 rot_axis = vector_cross(vector(0, 1, 0), cyl.axis);
-    float magnitude = vector_magnitude(rot_axis);
-    if (magnitude > EPSILON)
+    t_point 	local_hit;
+    t_vector4	rot_axis;
+	float		cos_theta;
+	float		sin_theta;
+
+	local_hit = vector_subtract(world_hit, cyl.center);
+	rot_axis = vector_cross(vector(0, 1, 0), cyl.axis);
+    if (vector_magnitude(rot_axis) > EPSILON)
     {
         vector_normalize(&rot_axis);
-        float angle = acosf(vector_dot(vector(0, 1, 0), cyl.axis));
-        local_hit = rotate_vector(local_hit, rot_axis, -angle);
+		cos_theta = vector_dot(vector(0, 1, 0), cyl.axis);
+		sin_theta = sqrtf(1.0f - (cos_theta * cos_theta));
+		local_hit = rotate_vector_fast(local_hit, rot_axis, cos_theta, -sin_theta);
     }
     return (local_hit);
 }

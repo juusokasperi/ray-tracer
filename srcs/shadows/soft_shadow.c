@@ -11,6 +11,7 @@ static void	create_coordinate_system(t_vector4 n, t_vector4 *nt, t_vector4 *nb)
 	*nb = vector_cross(n, *nt);
 }
 
+/*
 static t_vector4	get_random_point_on_light_disk(t_light light, t_point origin, unsigned int *seed)
 {
 	t_vector4	light_dir;
@@ -28,6 +29,32 @@ static t_vector4	get_random_point_on_light_disk(t_light light, t_point origin, u
 	point = vector_add(light.pos, vector_multiply(u, r * cosf(theta)));
 	point = vector_add(point, vector_multiply(v, r * sinf(theta)));
 	return (point);
+}
+*/
+
+static t_vector4 get_random_point_on_light_disk(t_light light, t_point origin, unsigned int *seed)
+{
+    t_vector4 light_dir, u, v, point;
+    float     rnd_x, rnd_y;
+
+    light_dir = vector_subtract(light.pos, origin);
+    vector_normalize(&light_dir);
+    create_coordinate_system(light_dir, &u, &v);
+
+    // Rejection Sampling: Try until we hit the circle
+    do {
+        rnd_x = random_float(seed) * 2.0f - 1.0f; // Range -1 to 1
+        rnd_y = random_float(seed) * 2.0f - 1.0f;
+    } while ((rnd_x * rnd_x + rnd_y * rnd_y) > 1.0f);
+
+    // Scale and place
+    rnd_x *= light.radius;
+    rnd_y *= light.radius;
+    
+    // Linear combination (No trig!)
+    point = vector_add(light.pos, vector_multiply(u, rnd_x));
+    point = vector_add(point, vector_multiply(v, rnd_y));
+    return (point);
 }
 
 float	calculate_shadow_factor(t_data *data, t_surface *surf,

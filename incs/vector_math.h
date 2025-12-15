@@ -131,4 +131,23 @@ static inline t_vector4 vec_mul(t_vector4 a, t_vector4 b)
 	return (vector(a.x * b.x, a.y * b.y, a.z * b.z));
 }
 
+static inline t_vector4 rotate_vector_fast(t_vector4 v, t_vector4 k, float c, float s)
+{
+    t_vector4	res;
+    t_vector4	cross;
+	t_vector4	last;
+	float		dot;
+
+    res = vector_multiply(v, c);
+    
+    cross = vector_cross(k, v);
+    cross = vector_multiply(cross, s);
+    res = vector_add(res, cross);
+    
+    dot = vector_dot(k, v);
+	last = vector_multiply(k, dot * (1.0f - c));
+    
+    return (vector_add(res, last));
+}
+
 #endif

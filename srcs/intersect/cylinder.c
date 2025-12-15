@@ -15,7 +15,6 @@
 static float	disk_intersection(t_ray ray, t_cylinder cylinder, int side);
 static float	infinite_cylinder_intersection(t_ray ray, t_cylinder cyl);
 static void		get_cylinder_t(float t[3], t_ray ray, t_cylinder cylinder);
-static t_ray	transform_ray(t_ray ray, t_cylinder cylinder);
 
 /*
 	Instead of checking in the actual 'world space', we transform the ray
@@ -31,7 +30,7 @@ float	cylinder_ray_intersect(t_ray ray, t_cylinder *cylinder)
 	int		i;
 	float	min;
 
-	ray = transform_ray(ray, *cylinder);
+	ray = transform_ray(ray, cylinder->center, cylinder->axis);
 	get_cylinder_t(t, ray, *cylinder);
 	min = -1;
 	i = -1;
@@ -78,35 +77,6 @@ static float	disk_intersection(t_ray ray, t_cylinder cylinder, int side)
 		}
 	}
 	return (-1);
-}
-
-static t_ray	transform_ray(t_ray ray, t_cylinder cylinder)
-{
-	t_vector4	rot_axis;
-	t_vector4	up;
-	float		angle;
-	float		magnitude_rot_axis;
-
-	up = vector(0, 1, 0);
-	rot_axis = vector_cross(up, cylinder.axis);
-	magnitude_rot_axis = vector_magnitude(rot_axis);
-	if (magnitude_rot_axis < EPSILON)
-	{
-		if (cylinder.axis.y > 0)
-			rot_axis = vector(0, 0, 0);
-		else
-			rot_axis = vector(1, 0, 0);
-	}
-	else
-		vector_normalize(&rot_axis);
-	ray.origin = vector_subtract(ray.origin, cylinder.center);
-	if (magnitude_rot_axis > EPSILON)
-	{
-		angle = acosf(vector_dot(up, cylinder.axis));
-		ray.origin = rotate_vector(ray.origin, rot_axis, -angle);
-		ray.direction = rotate_vector(ray.direction, rot_axis, -angle);
-	}
-	return (ray);
 }
 
 static float	infinite_cylinder_intersection(t_ray ray, t_cylinder cyl)

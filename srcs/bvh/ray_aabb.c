@@ -12,8 +12,6 @@
 
 #include "mini_rt.h"
 
-static bool	check_node_intersection(t_ray ray, t_bvh_node *node, float min_t);
-static bool	process_leaf_node(t_ray ray, t_obj_t *context, t_bvh_node *node);
 static void	intersect_planes(t_ray ray, t_scene scene, t_obj_t *context);
 
 float	find_closest_intersection(t_ray ray, t_data *data, 
@@ -58,71 +56,52 @@ static void	intersect_planes(t_ray ray, t_scene scene, t_obj_t *context)
 
 /*
 	Traverses the BVH tree for intersection between the view_ray and objects.
-
-	Starts from the root node, and if intersection is found, traverses downwards
-	in the tree, checking each child node.
-
-	If an intersection with an object is found,
-	sets context.min_t and context.closest.
 */
-bool	bvh_traverse(t_ray ray, t_bvh *bvh, t_obj_t *context, uint32_t node_idx)
+bool bvh_traverse(t_ray ray, t_bvh *bvh, t_obj_t *context, 
+                           uint32_t start_node)
 {
-	t_bvh_node	*node;
-	uint16_t	left_child;
-	uint16_t	right_child;
-	bool		hit_left;
-	bool		hit_right;
+    t_bvh_node  *node;
+    uint32_t    node_i;
+    uint32_t    stack[64];
+    int         stack_ptr;
+    float       t_enter, t_exit;
+    bool        hit_any = false;
 
-	node = &bvh->nodes[node_idx];
-	if (!check_node_intersection(ray, node, context->min_t))
-		return (false);
-	left_child = get_left_child(node->left_right);
-	right_child = get_right_child(node->left_right);
-	if (node->left_right == NO_CHILDREN)
-		return (process_leaf_node(ray, context, node));
-	hit_left = false;
-	hit_right = false;
-	if (left_child != NO_CHILD)
-		hit_left = bvh_traverse(ray, bvh, context, left_child);
-	if (right_child != NO_CHILD)
-		hit_right = bvh_traverse(ray, bvh, context, right_child);
-	return (hit_left || hit_right);
-}
+    stack_ptr = 0;
+    stack[stack_ptr++] = start_node;
 
-static bool	check_node_intersection(t_ray ray, t_bvh_node *node, float min_t)
-{
-	float	t[2];
+    while (stack_ptr > 0)
+    {
+        node_i = stack[--stack_ptr];
+        node = &bvh->nodes[node_i];
 
-	if (!ray_aabb_intersect(&ray, &node->bounds, &t[0], &t[1]))
-		return (false);
-	if (t[1] < EPSILON)
-		return (false);
-	if (min_t != -1 && t[0] > min_t)
-		return (false);
-	return (true);
-}
+        if (!ray_aabb_intersect(&ray, &node->bounds, &t_enter, &t_exit))
+            continue;
+        
+        if (t_exit < EPSILON)
+            continue;
+        if (context->min_t > 0 && t_enter > context->min_t)
+            continue;
 
-static bool	process_leaf_node(t_ray ray, t_obj_t *context, t_bvh_node *node)
-{
-	uint16_t	count;
-	uint16_t	first;
-	uint16_t	i;
-	float		t;
-	bool		hit;
-
-	count = get_count(node->first_count);
-	first = get_first(node->first_count);
-	hit = false;
-	i = -1;
-	while (++i < count)
-	{
-		t = ray_intersect(ray, &context->objects[first + i]);
-		if (t > EPSILON && (t < context->min_t || context->min_t == -1))
-		{
-			context->min_t = t;
-			*(context->closest) = context->objects[first + i];
-			hit = true;
-		}
-	}
-	return (hit);
+        if (node->left_right == NO_CHILDREN)
+        {
+            uint16_t first = get_first(node->first_count);
+            uint16_t count = get_count(node->first_count);
+            
+            for (uint16_t i = 0; i < count; i++)
+            {
+                float t = ray_intersect(ray, &context->objects[first + i]);
+                if (t > EPSILON && (t < context->min_t || context->min_t == -1))
+                {
+                    context->min_t = t;
+                    *(context->closest) = context->objects[first + i];
+                    hit_any = true;
+                }
+            }
+        }
+        else
+            push_children_sorted(bvh, ray, node->left_right, 
+                               stack, &stack_ptr);
+    }
+    return (hit_any);
 }

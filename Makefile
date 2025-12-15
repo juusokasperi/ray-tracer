@@ -4,7 +4,7 @@ SRCS = main.c							\
 	color/checkerboard.c				\
 	intersect/cylinder.c				\
 	intersect/cone.c					\
-	intersect/cone_2.c					\
+	intersect/transform.c				\
 	intersect/intersect.c				\
 	shadows/diffuse.c					\
 	shadows/shadow_check.c				\
@@ -69,7 +69,7 @@ HDRS_PATH =	-I./incs -I$(LIBMLX_DIR)/include
 CC =		cc
 CFLAGS +=	-Wall -Wextra -Werror -O3 -march=native -mtune=native \
 			-fomit-frame-pointer -ffast-math -DNDEBUG \
-			-funroll-loops -flto -MMD -MP
+			-funroll-loops -flto -MMD -MP -g
 
 LIBMLX_DIR =	./MLX42
 LIBMLX =		$(LIBMLX_DIR)/build/libmlx42.a
