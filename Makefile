@@ -68,7 +68,8 @@ HDRS_PATH =	-I./incs -I$(LIBMLX_DIR)/include
 
 CC =		cc
 CFLAGS +=	-Wall -Wextra -Werror -O3 -march=native -mtune=native \
-			-fomit-frame-pointer -DNDEBUG -flto -MMD -MP
+			-fomit-frame-pointer -ffast-math -DNDEBUG \
+			-funroll-loops -flto -MMD -MP
 
 LIBMLX_DIR =	./MLX42
 LIBMLX =		$(LIBMLX_DIR)/build/libmlx42.a
