@@ -81,7 +81,7 @@ bool	parse_positive_float(char **parts, int index, float *value,
 	return (true);
 }
 
-bool	parse_object_position(Arena *a, char **parts, t_vector *position)
+bool	parse_object_position(Arena *a, char **parts, t_vector4 *position)
 {
 	bool	result;
 
@@ -91,7 +91,7 @@ bool	parse_object_position(Arena *a, char **parts, t_vector *position)
 	return (result);
 }
 
-bool	parse_object_direction(Arena *a, char **parts, t_vector *direction)
+bool	parse_object_direction(Arena *a, char **parts, t_vector4 *direction)
 {
 	bool	result;
 

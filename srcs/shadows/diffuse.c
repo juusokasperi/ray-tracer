@@ -29,7 +29,7 @@ static inline t_rgb	diffuse_term(t_light l, t_surface *s, float ndl, float eff)
 static inline t_rgb	specular_term(t_light l, t_surface *s,
 				t_ray lr, float ndl, float eff)
 {
-	t_vector	r;
+	t_vector4	r;
 	float		rdv;
 
 	if (s->mat->shininess <= 0.f)

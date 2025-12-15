@@ -52,8 +52,8 @@ bool	parse_cone(char *line, t_line_context *ctx);
 bool	validate_object_count(t_data *data);
 
 /* Object property parsing utilities */
-bool	parse_object_position(Arena *a, char **parts, t_vector *position);
-bool	parse_object_direction(Arena *a, char **parts, t_vector *direction);
+bool	parse_object_position(Arena *a, char **parts, t_vector4 *position);
+bool	parse_object_direction(Arena *a, char **parts, t_vector4 *direction);
 bool	parse_object_color(Arena *a, char *color_str, t_object_mat *object,
 		bool is_checkered, t_rgb *color_2);
 void	apply_object_modifiers(t_object_mat *obj, t_line_context *ctx);
@@ -71,8 +71,8 @@ bool	parse_fov(char **parts, int index, int *fov);
 
 /* Basic parsing functions */
 bool	parse_float(char *str, float *result);
-bool	parse_vector(Arena *a, char *str, t_vector *vec);
-bool	parse_normalized_vector(Arena *a, char *str, t_vector *vec);
+bool	parse_vector(Arena *a, char *str, t_vector4 *vec);
+bool	parse_normalized_vector(Arena *a, char *str, t_vector4 *vec);
 bool	parse_rgb(Arena *a, char *str, t_rgb *color);
 bool	parse_dual_rgb(Arena *a, char *str, t_rgb *color_1, t_rgb *color_2);
 

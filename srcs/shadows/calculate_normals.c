@@ -21,7 +21,7 @@
 */
 static t_point	cylinder_normal(t_point hit_point, t_cylinder *cyl)
 {
-	t_vector	to_hit;
+	t_vector4	to_hit;
 	float		projection;
 	t_point		surface_normal;
 
@@ -48,7 +48,7 @@ static t_point	cylinder_normal(t_point hit_point, t_cylinder *cyl)
 */
 static t_point	cone_normal(t_point hit_point, t_cone *cone)
 {
-	t_vector	to_hit;
+	t_vector4	to_hit;
 	float		proj;
 	t_point		axis_point;
 
@@ -60,7 +60,7 @@ static t_point	cone_normal(t_point hit_point, t_cone *cone)
 	return (vector_subtract(hit_point, axis_point));
 }
 
-t_point	calculate_normal(t_vector view_direction,
+t_point	calculate_normal(t_vector4 view_direction,
 		t_point hit_point, t_object_geom *obj)
 {
 	t_point	surface_normal;

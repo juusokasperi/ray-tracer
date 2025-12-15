@@ -82,8 +82,8 @@ static float	disk_intersection(t_ray ray, t_cylinder cylinder, int side)
 
 static t_ray	transform_ray(t_ray ray, t_cylinder cylinder)
 {
-	t_vector	rot_axis;
-	t_vector	up;
+	t_vector4	rot_axis;
+	t_vector4	up;
 	float		angle;
 	float		magnitude_rot_axis;
 

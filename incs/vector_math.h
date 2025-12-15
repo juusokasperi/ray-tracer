@@ -16,9 +16,19 @@
 # include "structs.h"
 # include <math.h>
 
-static inline t_vector	vector(float x, float y, float z)
+static inline t_vector3	vector3(float x, float y, float z)
 {
-	t_vector	res;
+	t_vector3	res;
+
+	res.x = x;
+	res.y = y;
+	res.z = z;
+	return (res);
+}
+
+static inline t_vector4	vector(float x, float y, float z)
+{
+	t_vector4	res;
 
 	res.x = x;
 	res.y = y;
@@ -27,9 +37,9 @@ static inline t_vector	vector(float x, float y, float z)
 	return (res);
 }
 
-static inline t_vector	vector_add(t_vector a, t_vector b)
+static inline t_vector4	vector_add(t_vector4 a, t_vector4 b)
 {
-	t_vector	res;
+	t_vector4	res;
 
 	res.x = a.x + b.x;
 	res.y = a.y + b.y;
@@ -37,9 +47,9 @@ static inline t_vector	vector_add(t_vector a, t_vector b)
 	return (res);
 }
 
-static inline t_vector	vector_subtract(t_vector a, t_vector b)
+static inline t_vector4	vector_subtract(t_vector4 a, t_vector4 b)
 {
-	t_vector	res;
+	t_vector4	res;
 
 	res.x = a.x - b.x;
 	res.y = a.y - b.y;
@@ -47,9 +57,9 @@ static inline t_vector	vector_subtract(t_vector a, t_vector b)
 	return (res);
 }
 
-static inline t_vector	vector_multiply(t_vector a, float scalar)
+static inline t_vector4	vector_multiply(t_vector4 a, float scalar)
 {
-	t_vector	res;
+	t_vector4	res;
 
 	res.x = scalar * a.x;
 	res.y = scalar * a.y;
@@ -57,14 +67,14 @@ static inline t_vector	vector_multiply(t_vector a, float scalar)
 	return (res);
 }
 
-static inline float	vector_dot(t_vector a, t_vector b)
+static inline float	vector_dot(t_vector4 a, t_vector4 b)
 {
 	return (a.x * b.x + a.y * b.y + a.z * b.z);
 }
 
-static inline t_vector	vector_cross(t_vector a, t_vector b)
+static inline t_vector4	vector_cross(t_vector4 a, t_vector4 b)
 {
-	t_vector	res;
+	t_vector4	res;
 
 	res.x = a.y * b.z - b.y * a.z;
 	res.y = a.z * b.x - b.z * a.x;
@@ -72,12 +82,12 @@ static inline t_vector	vector_cross(t_vector a, t_vector b)
 	return (res);
 }
 
-static inline float	vector_magnitude(t_vector a)
+static inline float	vector_magnitude(t_vector4 a)
 {
 	return (sqrtf(a.x * a.x + a.y * a.y + a.z * a.z));
 }
 
-static inline void	vector_normalize(t_vector *a)
+static inline void	vector_normalize(t_vector4 *a)
 {
 	float	magnitude;
 	float	inv_mag;
@@ -98,10 +108,10 @@ static inline void	vector_normalize(t_vector *a)
 	}
 }
 
-static inline t_vector	rotate_vector(t_vector v, t_vector k, float angle)
+static inline t_vector4	rotate_vector(t_vector4 v, t_vector4 k, float angle)
 {
-	t_vector	res;
-	t_vector	cross;
+	t_vector4	res;
+	t_vector4	cross;
 	float		cos_a;
 	float		sin_a;
 
@@ -116,7 +126,7 @@ static inline t_vector	rotate_vector(t_vector v, t_vector k, float angle)
 	return (res);
 }
 
-static inline t_vector vec_mul(t_vector a, t_vector b)
+static inline t_vector4 vec_mul(t_vector4 a, t_vector4 b)
 {
 	return (vector(a.x * b.x, a.y * b.y, a.z * b.z));
 }

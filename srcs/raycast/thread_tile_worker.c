@@ -13,9 +13,9 @@
 #include "mini_rt.h"
 #include "thread_tile_inline.h"
 
-static inline t_vector	accumulate_sample(t_data *data, int idx, t_vector new_color)
+static inline t_vector4	accumulate_sample(t_data *data, int idx, t_vector4 new_color)
 {
-	t_vector	accum;
+	t_vector4	accum;
 	float		weight;
 
 	if (data->frame.sample_count == 0)
@@ -32,7 +32,7 @@ static inline t_vector	accumulate_sample(t_data *data, int idx, t_vector new_col
 	return (accum);
 }
 
-static inline t_vector	trace_pixel(t_pixel_ctx *ctx)
+static inline t_vector4	trace_pixel(t_pixel_ctx *ctx)
 {
 	t_ray		ray;
 	t_rgb		color;
@@ -48,8 +48,8 @@ static inline t_vector	trace_pixel(t_pixel_ctx *ctx)
 static void	raytrace_tile(t_data *data, t_tile tile, unsigned int *rng_state)
 {
 	t_pixel_ctx	ctx;
-	t_vector	new_color;
-	t_vector	accum_color;
+	t_vector4	new_color;
+	t_vector4	accum_color;
 	t_rgb		final_rgb;
 
 	ctx.data = data;

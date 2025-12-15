@@ -18,7 +18,7 @@ static bool	is_point_inside(t_point point, const t_object_geom *obj);
 	If f.ex. camera is inside a sphere and the light source is outside it,
 	returns 'false' and no further checking for this light source is needed.
 */
-bool	light_visible(t_vector cam_pos, t_vector light_pos, const t_object_geom *obj)
+bool	light_visible(t_vector4 cam_pos, t_vector4 light_pos, const t_object_geom *obj)
 {
 	return (is_point_inside(cam_pos, obj) == is_point_inside(light_pos, obj));
 }
@@ -32,10 +32,10 @@ bool	light_visible(t_vector cam_pos, t_vector light_pos, const t_object_geom *ob
 */
 static bool	is_point_inside_cylinder(t_point point, const t_cylinder *cyl)
 {
-	t_vector	center_to_point;
+	t_vector4	center_to_point;
 	float		project_to_axis;
-	t_vector	closest_point;
-	t_vector	perpendicular;
+	t_vector4	closest_point;
+	t_vector4	perpendicular;
 	float		distance_sqrd;
 
 	center_to_point = vector_subtract(point, cyl->center);
@@ -59,10 +59,10 @@ static bool	is_point_inside_cylinder(t_point point, const t_cylinder *cyl)
 */
 static bool	is_point_inside_cone(t_point point, const t_cone *cone)
 {
-	t_vector	center_to_point;
+	t_vector4	center_to_point;
 	float		project_to_axis;
-	t_vector	closest_point;
-	t_vector	perpendicular;
+	t_vector4	closest_point;
+	t_vector4	perpendicular;
 	float		distance_sqrd;
 	float		normalized_height;
 
@@ -85,7 +85,7 @@ static bool	is_point_inside_cone(t_point point, const t_cone *cone)
 */
 static bool	is_point_inside_sphere(t_point point, const t_sphere *sphere)
 {
-	t_vector	center_to_point;
+	t_vector4	center_to_point;
 	float		dist_sqrd;
 
 	center_to_point = vector_subtract(point, sphere->center);

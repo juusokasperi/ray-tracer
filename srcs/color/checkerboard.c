@@ -14,7 +14,7 @@
 #include "structs.h"
 
 static bool		checkerboard_sphere(t_point point,
-					t_vector center, float scale);
+					t_vector4 center, float scale);
 static bool		checkerboard_cylinder(t_cylinder cyl, t_point world_hit, float scale);
 static bool		checkerboard_cone(t_cone cone, t_point world_hit, float scale);
 static bool		checkerboard_plane(t_point point, float scale);
@@ -60,7 +60,7 @@ static bool	checkerboard_plane(t_point point, float scale)
 	- Longitude; angle around the y-axis
 	- Latitude; angle from the y-axis
 */
-static bool	checkerboard_sphere(t_point point, t_vector center, float scale)
+static bool	checkerboard_sphere(t_point point, t_vector4 center, float scale)
 {
 	int	longitude;
 	int	latitude;
@@ -136,7 +136,7 @@ static bool	checkerboard_cylinder(t_cylinder cyl, t_point world_hit, float scale
 static t_point get_local_hit(t_point world_hit, t_cylinder cyl)
 {
     t_point local_hit = vector_subtract(world_hit, cyl.center);
-    t_vector rot_axis = vector_cross(vector(0, 1, 0), cyl.axis);
+    t_vector4 rot_axis = vector_cross(vector(0, 1, 0), cyl.axis);
     float magnitude = vector_magnitude(rot_axis);
     if (magnitude > EPSILON)
     {

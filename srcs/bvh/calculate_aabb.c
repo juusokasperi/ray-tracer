@@ -10,7 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mini_rt.h"
+#include "structs.h"
+#include "vector_math.h"
 
 static t_aabb_bounds	calculate_aabb_sphere(t_sphere *sphere)
 {
@@ -33,8 +34,8 @@ static t_aabb_bounds	calculate_aabb_plane(const t_plane *plane)
 
 	limit = 1000.0f;
 	thickness = 0.1f;
-	bounds.min = vector(-limit, -limit, -limit);
-	bounds.max = vector(limit, limit, limit);
+	bounds.min = vector3(-limit, -limit, -limit);
+	bounds.max = vector3(limit, limit, limit);
 	if (fabsf(plane->normal.x) > 0.5f)
 	{
 		bounds.min.x = plane->point.x - thickness;
@@ -55,8 +56,8 @@ static t_aabb_bounds	calculate_aabb_plane(const t_plane *plane)
 
 static t_aabb_bounds	calculate_aabb_cylinder(const t_cylinder *cyl)
 {
-	t_vector		p_1;
-	t_vector		p_2;
+	t_vector4		p_1;
+	t_vector4		p_2;
 	t_aabb_bounds	bounds;
 
 	p_1 = vector(
@@ -67,9 +68,9 @@ static t_aabb_bounds	calculate_aabb_cylinder(const t_cylinder *cyl)
 			cyl->center.x - cyl->axis.x * cyl->height * 0.5f,
 			cyl->center.y - cyl->axis.y * cyl->height * 0.5f,
 			cyl->center.z - cyl->axis.z * cyl->height * 0.5f);
-	bounds.min = vector(fminf(p_1.x, p_2.x), fminf(p_1.y, p_2.y),
+	bounds.min = vector3(fminf(p_1.x, p_2.x), fminf(p_1.y, p_2.y),
 			fminf(p_1.z, p_2.z));
-	bounds.max = vector(fmaxf(p_1.x, p_2.x), fmaxf(p_1.y, p_2.y),
+	bounds.max = vector3(fmaxf(p_1.x, p_2.x), fmaxf(p_1.y, p_2.y),
 			fmaxf(p_1.z, p_2.z));
 	bounds.min.x -= cyl->radius;
 	bounds.min.y -= cyl->radius;
@@ -82,8 +83,8 @@ static t_aabb_bounds	calculate_aabb_cylinder(const t_cylinder *cyl)
 
 static t_aabb_bounds	calculate_aabb_cone(const t_cone *cone)
 {
-	t_vector		base;
-	t_vector		tip;
+	t_vector4		base;
+	t_vector4		tip;
 	t_aabb_bounds	bounds;
 
 	base = vector(
@@ -94,9 +95,9 @@ static t_aabb_bounds	calculate_aabb_cone(const t_cone *cone)
 			cone->center.x + cone->axis.x * cone->height * 0.5f,
 			cone->center.y + cone->axis.y * cone->height * 0.5f,
 			cone->center.z + cone->axis.z * cone->height * 0.5f);
-	bounds.min = vector(fminf(base.x, tip.x), fminf(base.y, tip.y),
+	bounds.min = vector3(fminf(base.x, tip.x), fminf(base.y, tip.y),
 			fminf(base.z, tip.z));
-	bounds.max = vector(fmaxf(base.x, tip.x), fmaxf(base.y, tip.y),
+	bounds.max = vector3(fmaxf(base.x, tip.x), fmaxf(base.y, tip.y),
 			fmaxf(base.z, tip.z));
 	bounds.min.x -= cone->radius;
 	bounds.min.y -= cone->radius;

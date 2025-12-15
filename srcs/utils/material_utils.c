@@ -1,9 +1,9 @@
 #include "material_utils.h"
 #include "thread_tile_inline.h"
 
-t_vector random_in_unit_sphere(unsigned int *seed)
+t_vector4 random_in_unit_sphere(unsigned int *seed)
 {
-	t_vector p;
+	t_vector4 p;
 
 	while (true)
 	{
@@ -16,10 +16,10 @@ t_vector random_in_unit_sphere(unsigned int *seed)
 	}
 }
 
-t_vector apply_glossiness(t_vector dir, float glossiness, unsigned int *seed)
+t_vector4 apply_glossiness(t_vector4 dir, float glossiness, unsigned int *seed)
 {
-	t_vector random_dir;
-	t_vector res;
+	t_vector4 random_dir;
+	t_vector4 res;
 
 	if (glossiness < EPSILON)
 		return (dir);
@@ -43,10 +43,10 @@ float fresnel(float cosine, float ref_idx)
 	return (r0 + (1.0f - r0) * x);
 }
 
-t_vector refract_vec(t_vector uv, t_vector n, float etai_over_etat)
+t_vector4 refract_vec(t_vector4 uv, t_vector4 n, float etai_over_etat)
 {
 	float cos_theta;
-	t_vector r_out_perp;
+	t_vector4 r_out_perp;
 	float r_out_parallel;
 
 	cos_theta = fminf(vector_dot(vector_multiply(uv, -1.0f), n), 1.0f);
@@ -56,12 +56,12 @@ t_vector refract_vec(t_vector uv, t_vector n, float etai_over_etat)
 	return (vector_add(r_out_perp, vector_multiply(n, r_out_parallel)));
 }
 
-t_vector reflect_dir(t_vector in, t_vector n)
+t_vector4 reflect_dir(t_vector4 in, t_vector4 n)
 {
 	return (vector_subtract(in, vector_multiply(n, 2.0f * vector_dot(in, n))));
 }
 
-t_ray make_ray(t_point origin, t_vector dir)
+t_ray make_ray(t_point origin, t_vector4 dir)
 {
 	t_ray r;
 
@@ -71,7 +71,7 @@ t_ray make_ray(t_point origin, t_vector dir)
 	return (r);
 }
 
-t_vector rgb_to_vec_norm(t_rgb c)
+t_vector4 rgb_to_vec_norm(t_rgb c)
 {
 	return (vector(c.r / 255.0f, c.g / 255.0f, c.b / 255.0f));
 }

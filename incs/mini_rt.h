@@ -104,15 +104,15 @@ t_rgb			rgb_scalar_multiply(t_rgb a, float scalar);
 t_rgb			rgb_add(t_rgb a, t_rgb b);
 t_rgb			rgb(int r, int g, int b);
 uint32_t		rgb_to_uint(t_rgb a);
-t_vector		rgb_to_vec(t_rgb rgb);
-t_rgb			vec_to_rgb(t_vector vec);
+t_vector4		rgb_to_vec(t_rgb rgb);
+t_rgb			vec_to_rgb(t_vector4 vec);
 
 //	shadows/shadow_check.c && shadow_check_2.c
-bool			light_visible(t_vector cam_pos, t_vector light_pos,
+bool			light_visible(t_vector4 cam_pos, t_vector4 light_pos,
 					const t_object_geom *obj);
 bool			in_shadow(t_ray light_ray, t_data *data, float max_dist);
 //	shadows/calculate_normals.c
-t_point			calculate_normal(t_vector view_direction,
+t_point			calculate_normal(t_vector4 view_direction,
 					t_point hit_point, t_object_geom *obj);
 
 // shadows/soft_shadow.c)
@@ -126,7 +126,7 @@ t_rgb			calculate_ambient(const t_object_mat *obj, t_ambient ambient);
 
 //	utils/ray_utils.c
 t_ray			build_light_ray(t_point hit_point, t_light light,
-					t_vector normal, float *out_dist);
+					t_vector4 normal, float *out_dist);
 t_ray			get_ray_for_px(t_data *data, float px, float py);
 t_point			get_point(t_ray ray, float t);
 void			init_ray_inv(t_ray *ray);

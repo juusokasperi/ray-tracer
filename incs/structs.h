@@ -34,7 +34,14 @@ typedef struct s_vector
 	float	y;
 	float	z;
 	float	w;
-}	t_vector;
+}	t_vector4;
+
+typedef struct s_vector3
+{
+	float	x;
+	float	y;
+	float	z;
+}	t_vector3;
 
 typedef struct s_interval
 {
@@ -44,8 +51,8 @@ typedef struct s_interval
 
 typedef struct s_aabb_bounds
 {
-	t_vector	min;
-	t_vector	max;
+	t_vector3	min;
+	t_vector3	max;
 }	t_aabb_bounds;
 
 typedef struct s_bvh_node
@@ -53,8 +60,7 @@ typedef struct s_bvh_node
 	t_aabb_bounds	bounds;
 	uint32_t		left_right;
 	uint32_t		first_count;
-	uint32_t		pad[6];
-}	t_bvh_node;
+}	__attribute__((aligned (32))) t_bvh_node;
 
 typedef struct s_bvh
 {
@@ -81,10 +87,10 @@ typedef struct s_viewport
 
 typedef struct s_camera
 {
-	t_vector	pos;
-	t_vector	forward;
-	t_vector	right;
-	t_vector	up;
+	t_vector4	pos;
+	t_vector4	forward;
+	t_vector4	right;
+	t_vector4	up;
 	t_viewport	vp;
 }	t_camera;
 
@@ -110,16 +116,16 @@ typedef struct s_light
 {
 	t_light_type	type;
 	t_rgb			color;
-	t_vector		pos;
+	t_vector4		pos;
 	float			ratio;
 	float			radius;
 }	t_light;
 
 typedef struct s_ray
 {
-	t_vector	origin;
-	t_vector	direction;
-	t_vector	inv_dir;
+	t_vector4	origin;
+	t_vector4	direction;
+	t_vector4	inv_dir;
 	int			sign[3];
 }	t_ray;
 
@@ -139,13 +145,13 @@ typedef struct s_sphere
 typedef struct s_plane
 {
 	t_point		point;
-	t_vector	normal;
+	t_vector4	normal;
 }	t_plane;
 
 typedef struct s_cylinder
 {
-	t_vector	center;
-	t_vector	axis;
+	t_vector4	center;
+	t_vector4	axis;
 	float		radius;
 	float		height;
 	float		inv_height;
@@ -223,7 +229,7 @@ typedef struct s_thread_context
 
 typedef struct s_frame
 {
-	t_vector	*accum_buffer;
+	t_vector4	*accum_buffer;
 	Arena		f_arena;
 	int			sample_count;
 }	t_frame;
@@ -258,8 +264,8 @@ typedef struct s_obj_t
 typedef struct s_surface_info
 {
 	t_point			point;
-	t_vector		normal;
-	t_vector		view_dir;
+	t_vector4		normal;
+	t_vector4		view_dir;
 	t_point			ray_origin;
 	const t_object_geom	*geom;
 	const t_object_mat	*mat;
@@ -272,7 +278,7 @@ typedef struct s_light_calc
 	float		n_dot_l;
 	float		r_dot_v;
 	float		attenuation;
-	t_vector	reflect_dir;
+	t_vector4	reflect_dir;
 	t_rgb		diffuse_contrib;
 	t_rgb		specular_contrib;
 }	t_light_calc;

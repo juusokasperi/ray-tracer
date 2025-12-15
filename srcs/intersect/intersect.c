@@ -48,7 +48,7 @@ static float	plane_ray_intersect(t_ray ray, t_plane plane)
 
 static float	sphere_ray_intersect(t_ray ray, t_sphere sphere)
 {
-	t_vector	s;
+	t_vector4	s;
 	float		b;
 	float		c;
 	float		h;

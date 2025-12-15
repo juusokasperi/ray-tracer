@@ -48,7 +48,7 @@ bool	parse_fov(char **parts, int index, int *fov)
 
 static void	setup_camera_basis(t_data *data)
 {
-	t_vector	world_up;
+	t_vector4	world_up;
 
 	vector_normalize(&data->cam.forward);
 	world_up.x = 0;

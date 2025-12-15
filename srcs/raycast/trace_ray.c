@@ -15,7 +15,7 @@ static void prepare_surface(t_surface *surf, t_ray ray, t_object_geom *geom,
 	surf->resolved_color = get_object_color(geom, surf->mat, surf->point);
 }
 
-static void adjust_normal_and_eta(t_vector ray_dir, t_vector *normal, 
+static void adjust_normal_and_eta(t_vector4 ray_dir, t_vector4 *normal, 
 								  float refraction_idx, float *eta)
 {
 	if (vector_dot(ray_dir, *normal) > 0.0f)
@@ -27,7 +27,7 @@ static void adjust_normal_and_eta(t_vector ray_dir, t_vector *normal,
 		*eta = 1.0f / refraction_idx;
 }
 
-static bool should_reflect(t_vector ray_dir, t_vector normal, 
+static bool should_reflect(t_vector4 ray_dir, t_vector4 normal, 
 						   float eta, unsigned int *seed)
 {
 	float cos_theta;
@@ -41,12 +41,12 @@ static bool should_reflect(t_vector ray_dir, t_vector normal,
 }
 
 static t_ray handle_glass(t_ray ray, t_surface *surf,
-						  t_vector *throughput, unsigned int *seed)
+						  t_vector4 *throughput, unsigned int *seed)
 {
-	t_vector surface_color;
+	t_vector4 surface_color;
 	float eta;
-	t_vector normal;
-	t_vector r_dir;
+	t_vector4 normal;
+	t_vector4 r_dir;
 
 	surface_color = rgb_to_vec_norm(surf->resolved_color);
 	*throughput = vec_mul(*throughput, surface_color);
@@ -59,13 +59,13 @@ static t_ray handle_glass(t_ray ray, t_surface *surf,
 	return (make_ray(surf->point, apply_glossiness(r_dir, surf->mat->glossiness, seed)));
 }
 
-static t_ray	handle_opaque(t_data *data, t_ray ray, t_surface *surf, t_vector *throughput,
-						t_vector *accum, bool *done, unsigned int *seed)
+static t_ray	handle_opaque(t_data *data, t_ray ray, t_surface *surf, t_vector4 *throughput,
+						t_vector4 *accum, bool *done, unsigned int *seed)
 {
 	t_rgb		direct_rgb;
-	t_vector	direct_light;
-	t_vector	diffuse;
-	t_vector	dir;
+	t_vector4	direct_light;
+	t_vector4	diffuse;
+	t_vector4	dir;
 
 	direct_rgb = calculate_color(data, surf, seed);
 	direct_light = rgb_to_vec(direct_rgb);
@@ -83,7 +83,7 @@ static t_ray	handle_opaque(t_data *data, t_ray ray, t_surface *surf, t_vector *t
 	return (make_ray(surf->point, apply_glossiness(dir, surf->mat->glossiness, seed)));
 }
 
-static bool russian_roulette(t_vector *throughput, int depth, unsigned int *seed)
+static bool russian_roulette(t_vector4 *throughput, int depth, unsigned int *seed)
 {
 	float p;
 
@@ -98,8 +98,8 @@ static bool russian_roulette(t_vector *throughput, int depth, unsigned int *seed
 
 t_rgb trace_ray(t_data *data, t_ray ray, int max_depth, unsigned int *seed)
 {
-	t_vector	 	throughput;
-	t_vector	 	accum_color;
+	t_vector4	 	throughput;
+	t_vector4	 	accum_color;
 	t_object_geom 	closest;
 	t_surface 		surf;
 	float	 		t;
