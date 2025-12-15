@@ -37,8 +37,6 @@ float	cone_ray_intersect(t_ray ray, t_cone *cone)
 	while (++i < 2)
 		if ((t[i] > 0 && t[i] < min) || (min == -1 && t[i] > 0))
 			min = t[i];
-	if (min > 0)
-		cone->local_hit = get_point(ray, min);
 	return (min);
 }
 

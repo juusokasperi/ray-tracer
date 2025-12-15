@@ -14,8 +14,8 @@
 
 static void	rotate_camera_y(t_data *data, float angle)
 {
-	t_vector	forward;
-	t_vector	right;
+	t_vector4	forward;
+	t_vector4	right;
 
 	forward = data->cam.forward;
 	right = data->cam.right;
@@ -28,8 +28,8 @@ static void	rotate_camera_y(t_data *data, float angle)
 
 static void	rotate_camera_x(t_data *data, float angle)
 {
-	t_vector	forward;
-	t_vector	up;
+	t_vector4	forward;
+	t_vector4	up;
 
 	forward = data->cam.forward;
 	up = data->cam.up;

@@ -37,10 +37,10 @@ void	init_ray_inv(t_ray *ray)
 	Sets the distance to the light source into *out_dist.
 */
 t_ray	build_light_ray(t_point hit_point, t_light light,
-			t_vector normal, float *out_dist)
+			t_vector4 normal, float *out_dist)
 {
 	t_ray		res;
-	t_vector	raw_dir;
+	t_vector4	raw_dir;
 
 	res.origin = vector_add(hit_point, vector_multiply(normal, SHADOW_EPSILON));
 	raw_dir = vector_subtract(light.pos, res.origin);
@@ -77,8 +77,8 @@ t_ray	build_light_ray(t_point hit_point, t_light light,
 t_ray	get_ray_for_px(t_data *data, float px, float py)
 {
 	t_ray		ray;
-	t_vector	right;
-	t_vector	up;
+	t_vector4	right;
+	t_vector4	up;
 	float		pixels[2];
 	t_camera	camera;
 

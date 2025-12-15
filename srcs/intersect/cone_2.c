@@ -12,7 +12,7 @@
 
 #include "mini_rt.h"
 
-static void	set_rotation_and_angle(t_vector *rot_axis, float *angle, float y)
+static void	set_rotation_and_angle(t_vector4 *rot_axis, float *angle, float y)
 {
 	if (y > 0)
 	{
@@ -28,8 +28,8 @@ static void	set_rotation_and_angle(t_vector *rot_axis, float *angle, float y)
 
 t_ray	transform_ray_cone(t_ray ray, t_cone cone)
 {
-	t_vector	rot_axis;
-	t_vector	up;
+	t_vector4	rot_axis;
+	t_vector4	up;
 	float		angle;
 	float		magnitude_rot_axis;
 

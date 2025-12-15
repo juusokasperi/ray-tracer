@@ -19,8 +19,8 @@ void	resize_hook(int width, int height, void *param)
 	data = param;
 	mlx_resize_image(data->mlx_img, width, height);
 	arena_reset(&data->frame.f_arena);
-	data->frame.accum_buffer = (t_vector *)arena_alloc_zeroed_aligned(&data->frame.f_arena,
-			sizeof(t_vector) * data->width * data->height, 16);
+	data->frame.accum_buffer = (t_vector4 *)arena_alloc_zeroed_aligned(&data->frame.f_arena,
+			sizeof(t_vector4) * data->width * data->height, 16);
 	data->width = width;
 	data->height = height;
 	data->cam.vp.width = 2.0f * tanf(data->cam.vp.fov / 2 * M_PI / 180.0f);

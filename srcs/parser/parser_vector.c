@@ -22,7 +22,7 @@ static bool	validate_vector_components(char **parts, char *str)
 	return (true);
 }
 
-bool	parse_vector(Arena *a, char *str, t_vector *vec)
+bool	parse_vector(Arena *a, char *str, t_vector4 *vec)
 {
 	char	**parts;
 	bool	result;
@@ -41,7 +41,7 @@ bool	parse_vector(Arena *a, char *str, t_vector *vec)
 	return (true);
 }
 
-bool	parse_normalized_vector(Arena *a, char *str, t_vector *vec)
+bool	parse_normalized_vector(Arena *a, char *str, t_vector4 *vec)
 {
 	if (!parse_vector(a, str, vec))
 		return (false);

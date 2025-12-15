@@ -23,7 +23,7 @@ static char	*type(t_shape shape)
 	return ("cylinder");
 }
 
-static void	print_leaf_node(t_bvh_node node, int i, t_object *objects)
+static void	print_leaf_node(t_bvh_node node, int i, t_object_geom *objects)
 {
 	uint16_t	first;
 	uint16_t	count;
@@ -58,7 +58,7 @@ static void	print_branch_node(t_bvh_node node, int i)
 /*
 	Prints out the structure of the BVH tree.
 */
-void	debug_bvh(t_bvh bvh, t_object *objects)
+void	debug_bvh(t_bvh bvh, t_object_geom *objects)
 {
 	uint32_t	i;
 

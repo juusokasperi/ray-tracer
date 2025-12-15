@@ -19,23 +19,19 @@ bool	validate_object_count(t_data *data)
 	return (true);
 }
 
-static void	setup_checkered_object(t_object *obj, t_line_context *ctx)
+static void	setup_checkered_object(t_object_mat *obj, t_line_context *ctx)
 {
-	t_checkerboard	*cb;
-
 	if (!obj || !ctx)
 		return ;
 	obj->is_checkered = ctx->is_checkered;
 	if (ctx->is_checkered)
 	{
-		cb = &obj->checkerboard;
-		cb->scale = ctx->scale;
-		cb->color_1 = obj->color;
-		cb->color_2 = ctx->color_2;
+		obj->ck_scale = ctx->scale;
+		obj->color_2 = ctx->color_2;
 	}
 }
 
-void	apply_object_modifiers(t_object *obj, t_line_context *ctx)
+void	apply_object_modifiers(t_object_mat *obj, t_line_context *ctx)
 {
 	if (!obj || !ctx)
 		return ;
@@ -50,7 +46,7 @@ void	apply_object_modifiers(t_object *obj, t_line_context *ctx)
 		obj->reflectivity = ctx->reflectivity;
 }
 
-bool	parse_object_color(Arena *a, char *color_str, t_object *object,
+bool	parse_object_color(Arena *a, char *color_str, t_object_mat *object,
 		bool is_checkered, t_rgb *color_2)
 {
 	bool	result;
@@ -64,7 +60,7 @@ bool	parse_object_color(Arena *a, char *color_str, t_object *object,
 	return (result);
 }
 
-void	setup_object_optionals(t_object *obj, t_line_context *ctx)
+void	setup_object_optionals(t_object_mat *obj, t_line_context *ctx)
 {
 	if (!obj || !ctx)
 		return ;

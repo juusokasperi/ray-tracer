@@ -17,15 +17,15 @@
 
 	@return Integer (0,1,2) representing the largest axis.
 */
-int	get_largest_axis(t_aabb_bounds bounds)
+int	get_largest_axis(t_aabb_bounds *bounds)
 {
 	float	x_extent;
 	float	y_extent;
 	float	z_extent;
 
-	x_extent = bounds.max.x - bounds.min.x;
-	y_extent = bounds.max.y - bounds.min.y;
-	z_extent = bounds.max.z - bounds.min.z;
+	x_extent = bounds->max.x - bounds->min.x;
+	y_extent = bounds->max.y - bounds->min.y;
+	z_extent = bounds->max.z - bounds->min.z;
 	if (x_extent >= y_extent && x_extent >= z_extent)
 		return (X);
 	else if (y_extent >= x_extent && y_extent >= z_extent)
@@ -37,10 +37,10 @@ int	get_largest_axis(t_aabb_bounds bounds)
 /*
 	Calculates center point for each axis in AABB
 */
-static t_vector	get_object_centroid(t_object obj)
+static t_vector4	get_object_centroid(t_object_geom *obj)
 {
 	t_aabb_bounds	bounds;
-	t_vector		centroid;
+	t_vector4		centroid;
 
 	bounds = calculate_object_aabb(obj);
 	centroid.x = (bounds.min.x + bounds.max.x) * 0.5f;
@@ -52,9 +52,9 @@ static t_vector	get_object_centroid(t_object obj)
 /*
 	Returns the center point of specified axis
 */
-float	get_centroid_info(t_object obj, int axis)
+float	get_centroid_info(t_object_geom *obj, int axis)
 {
-	t_vector	centroid;
+	t_vector4	centroid;
 
 	centroid = get_object_centroid(obj);
 	if (axis == X)
@@ -65,24 +65,24 @@ float	get_centroid_info(t_object obj, int axis)
 		return (centroid.z);
 }
 
-void	swap_objects(t_object *obj_1, t_object *obj_2)
+void	swap_objects(t_object_geom *obj_1, t_object_geom *obj_2)
 {
-	t_object	temp;
+	t_object_geom	temp;
 
 	temp = *obj_1;
 	*obj_1 = *obj_2;
 	*obj_2 = temp;
 }
 
-t_aabb_bounds	calculate_bounds(t_object *objects, int start, int end)
+t_aabb_bounds	calculate_bounds(t_object_geom *objects, int start, int end)
 {
 	t_aabb_bounds	obj_bounds;
 	t_aabb_bounds	bounds;
 
-	bounds = calculate_object_aabb(objects[start]);
+	bounds = calculate_object_aabb(&objects[start]);
 	while (++start <= end)
 	{
-		obj_bounds = calculate_object_aabb(objects[start]);
+		obj_bounds = calculate_object_aabb(&objects[start]);
 		bounds = aabb_union(bounds, obj_bounds);
 	}
 	return (bounds);

@@ -2,7 +2,6 @@ SRCS = main.c							\
 	utils/ray_utils.c					\
 	color/calculate_color.c				\
 	color/checkerboard.c				\
-	color/material.c					\
 	intersect/cylinder.c				\
 	intersect/cone.c					\
 	intersect/cone_2.c					\
@@ -47,6 +46,7 @@ SRCS = main.c							\
 	parser/parse_scene_utils.c			\
 	parser/parser_helpers.c				\
 	utils/main_utils.c					\
+	utils/material_utils.c				\
 	hooks/camera_controls.c				\
 	raycast/raycast_threaded.c			\
 	raycast/thread_tile_worker.c		\

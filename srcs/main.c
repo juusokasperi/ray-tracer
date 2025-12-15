@@ -61,11 +61,15 @@ int	main(int argc, char **argv)
 	t_data		data;
 	char		*scene_file;
 
+	printf("Size of object geom is: %zu\n", sizeof(t_object_geom));
+	printf("Size of object mat is: %zu\n", sizeof(t_object_mat));
+	printf("Size of bvh is: %zu\n", sizeof(t_bvh_node));
+
 	memset(&data, 0, sizeof(t_data));
 	data.arena = arena_init(PROT_READ | PROT_WRITE);
 	data.frame.f_arena = arena_init(PROT_READ | PROT_WRITE);
-	data.frame.accum_buffer = (t_vector *)arena_alloc_aligned(&data.frame.f_arena,
-			sizeof(t_vector) * WIDTH * HEIGHT, 16);
+	data.frame.accum_buffer = (t_vector4 *)arena_alloc_aligned(&data.frame.f_arena,
+			sizeof(t_vector4) * WIDTH * HEIGHT, 16);
 	if (!check_arguments(argc, argv, &scene_file))
 		return (1);
 	if (!setup_scene(&data, scene_file))

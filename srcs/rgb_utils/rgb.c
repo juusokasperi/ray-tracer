@@ -37,9 +37,9 @@ uint32_t	rgb_to_uint(t_rgb a)
 	return (clamp(a.r) << 24 | clamp(a.g) << 16 | clamp(a.b) << 8 | 0xFF);
 }
 
-t_vector	rgb_to_vec(t_rgb rgb)
+t_vector4	rgb_to_vec(t_rgb rgb)
 {
-	t_vector	vec;
+	t_vector4	vec;
 
 	vec.x = rgb.r;
 	vec.y = rgb.g;
@@ -48,7 +48,7 @@ t_vector	rgb_to_vec(t_rgb rgb)
 	return (vec);
 }
 
-t_rgb	vec_to_rgb(t_vector vec)
+t_rgb	vec_to_rgb(t_vector4 vec)
 {
 	t_rgb	rgb;
 

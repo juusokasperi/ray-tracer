@@ -12,9 +12,9 @@
 
 #include "mini_rt.h"
 
-static void	move_camera(t_data *data, t_vector direction, float speed)
+static void	move_camera(t_data *data, t_vector4 direction, float speed)
 {
-	t_vector	move;
+	t_vector4	move;
 
 	move = vector_multiply(direction, speed);
 	data->cam.pos = vector_add(data->cam.pos, move);

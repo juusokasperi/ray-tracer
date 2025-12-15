@@ -16,13 +16,14 @@ static bool	check_node_intersection(t_ray ray, t_bvh_node *node, float min_t);
 static bool	process_leaf_node(t_ray ray, t_obj_t *context, t_bvh_node *node);
 static void	intersect_planes(t_ray ray, t_scene scene, t_obj_t *context);
 
-float	find_closest_intersection(t_ray ray, t_data *data, t_object *closest)
+float	find_closest_intersection(t_ray ray, t_data *data, 
+			t_object_geom *closest)
 {
 	t_obj_t		context;
 
 	context.min_t = -1;
 	context.closest = closest;
-	context.objects = data->scene.objects;
+	context.objects = data->scene.geometry;
 	if (data->scene.plane_count > 0)
 		intersect_planes(ray, data->scene, &context);
 	if (data->scene.object_count > 0)
@@ -45,12 +46,12 @@ static void	intersect_planes(t_ray ray, t_scene scene, t_obj_t *context)
 	i = -1;
 	while (++i < scene.plane_count)
 	{
-		t = ray_intersect(ray, &scene.planes[i]);
+		t = ray_intersect(ray, &scene.plane_geometry[i]);
 		if (t > EPSILON
 			&& (t <= context->min_t || context->min_t == -1))
 		{
 			context->min_t = t;
-			*(context->closest) = scene.planes[i];
+			*(context->closest) = scene.plane_geometry[i];
 		}
 	}
 }
@@ -92,7 +93,7 @@ static bool	check_node_intersection(t_ray ray, t_bvh_node *node, float min_t)
 {
 	float	t[2];
 
-	if (!ray_aabb_intersect(&ray, node->bounds, &t[0], &t[1]))
+	if (!ray_aabb_intersect(&ray, &node->bounds, &t[0], &t[1]))
 		return (false);
 	if (t[1] < EPSILON)
 		return (false);

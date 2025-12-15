@@ -38,8 +38,6 @@ float	cylinder_ray_intersect(t_ray ray, t_cylinder *cylinder)
 	while (++i < 3)
 		if ((t[i] > 0 && t[i] < min) || (min == -1 && t[i] > 0))
 			min = t[i];
-	if (min > 0)
-		cylinder->local_hit = get_point(ray, min);
 	return (min);
 }
 
@@ -84,8 +82,8 @@ static float	disk_intersection(t_ray ray, t_cylinder cylinder, int side)
 
 static t_ray	transform_ray(t_ray ray, t_cylinder cylinder)
 {
-	t_vector	rot_axis;
-	t_vector	up;
+	t_vector4	rot_axis;
+	t_vector4	up;
 	float		angle;
 	float		magnitude_rot_axis;
 

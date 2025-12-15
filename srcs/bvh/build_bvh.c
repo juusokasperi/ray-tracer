@@ -12,12 +12,12 @@
 
 #include "mini_rt.h"
 
-static int		partition_object(t_object *objects,
+static int		partition_object(t_object_geom *objects,
 					int start, int end, int axis);
-static uint32_t	build_leaf_node(t_bvh *bvh, t_object *objects,
+static uint32_t	build_leaf_node(t_bvh *bvh, t_object_geom *objects,
 					int start, int count);
-static uint32_t	build_two_object_node(t_bvh *bvh, t_object *objects, int start);
-static uint32_t	build_bvh(t_bvh *bvh, t_object *objects, int start, int end);
+static uint32_t	build_two_object_node(t_bvh *bvh, t_object_geom *objects, int start);
+static uint32_t	build_bvh(t_bvh *bvh, t_object_geom *objects, int start, int end);
 
 /*
 	Creates a bounding volume hierarchy structure, which reduces
@@ -46,7 +46,7 @@ t_bvh	init_bvh(t_data *data)
 		exit(1);
 	}
 	bvh.node_count = 0;
-	build_bvh(&bvh, data->scene.objects, 0, data->scene.object_count - 1);
+	build_bvh(&bvh, data->scene.geometry, 0, data->scene.object_count - 1);
 	return (bvh);
 }
 
@@ -56,19 +56,19 @@ t_bvh	init_bvh(t_data *data)
 
 	@return Mid point of the array.
 */
-static int	partition_object(t_object *objects, int start, int end, int axis)
+static int	partition_object(t_object_geom *objects, int start, int end, int axis)
 {
 	float		pivot_value;
 	float		value;
 	int			i;
 
 	i = (start + end) / 2;
-	pivot_value = get_centroid_info(objects[i], axis);
+	pivot_value = get_centroid_info(&objects[i], axis);
 	swap_objects(&objects[i], &objects[end]);
 	i = start;
 	while (i < end)
 	{
-		value = get_centroid_info(objects[i], axis);
+		value = get_centroid_info(&objects[i], axis);
 		if (value < pivot_value)
 		{
 			swap_objects(&objects[i], &objects[start]);
@@ -84,7 +84,7 @@ static int	partition_object(t_object *objects, int start, int end, int axis)
 	Builds the leaf node, which in our case will always contain
 	exactly 1 object.
 */
-static uint32_t	build_leaf_node(t_bvh *bvh, t_object *objects,
+static uint32_t	build_leaf_node(t_bvh *bvh, t_object_geom *objects,
 					int start, int count)
 {
 	uint32_t		node_i;
@@ -93,11 +93,11 @@ static uint32_t	build_leaf_node(t_bvh *bvh, t_object *objects,
 	int				i;
 
 	node_i = bvh->node_count++;
-	bounds = calculate_object_aabb(objects[start]);
+	bounds = calculate_object_aabb(&objects[start]);
 	i = -1;
 	while (++i < count)
 	{
-		obj_bounds = calculate_object_aabb(objects[start + i]);
+		obj_bounds = calculate_object_aabb(&objects[start + i]);
 		bounds = aabb_union(bounds, obj_bounds);
 	}
 	bvh->nodes[node_i].bounds = bounds;
@@ -110,7 +110,7 @@ static uint32_t	build_leaf_node(t_bvh *bvh, t_object *objects,
 	If only two objects remain while building the bvh, we sort them and
 	create leaf nodes for both of them.
 */
-static uint32_t	build_two_object_node(t_bvh *bvh, t_object *objects, int start)
+static uint32_t	build_two_object_node(t_bvh *bvh, t_object_geom *objects, int start)
 {
 	uint32_t		node_i;
 	uint32_t		left;
@@ -119,10 +119,10 @@ static uint32_t	build_two_object_node(t_bvh *bvh, t_object *objects, int start)
 	int				axis;
 
 	bounds = calculate_bounds(objects, start, start + 1);
-	axis = get_largest_axis(bounds);
+	axis = get_largest_axis(&bounds);
 	node_i = bvh->node_count++;
-	if (get_centroid_info(objects[start], axis)
-		> get_centroid_info(objects[start + 1], axis))
+	if (get_centroid_info(&objects[start], axis)
+		> get_centroid_info(&objects[start + 1], axis))
 		swap_objects(&objects[start], &objects[start + 1]);
 	left = build_leaf_node(bvh, objects, start, 1);
 	right = build_leaf_node(bvh, objects, start + 1, 1);
@@ -135,7 +135,7 @@ static uint32_t	build_two_object_node(t_bvh *bvh, t_object *objects, int start)
 /*
 	Creates a BVH tree recursively.
 */
-static uint32_t	build_bvh(t_bvh *bvh, t_object *objects, int start, int end)
+static uint32_t	build_bvh(t_bvh *bvh, t_object_geom *objects, int start, int end)
 {
 	int			mid;
 	uint32_t	node_i;
@@ -153,7 +153,7 @@ static uint32_t	build_bvh(t_bvh *bvh, t_object *objects, int start, int end)
 	node_i = bvh->node_count++;
 	bvh->nodes[node_i].bounds = calculate_bounds(objects, start, end);
 	mid = partition_object(objects, start, end,
-			get_largest_axis(bvh->nodes[node_i].bounds));
+			get_largest_axis(&bvh->nodes[node_i].bounds));
 	if (mid == start || mid == end)
 		mid = start + count / 2;
 	left = build_bvh(bvh, objects, start, mid);

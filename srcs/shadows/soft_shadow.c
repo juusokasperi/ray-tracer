@@ -1,7 +1,7 @@
 #include "mini_rt.h"
 #include "thread_tile_inline.h"
 
-static void	create_coordinate_system(t_vector n, t_vector *nt, t_vector *nb)
+static void	create_coordinate_system(t_vector4 n, t_vector4 *nt, t_vector4 *nb)
 {
 	if (fabs(n.x) > fabsf(n.y))
 		*nt = vector(n.z, 0, -n.x);
@@ -11,12 +11,12 @@ static void	create_coordinate_system(t_vector n, t_vector *nt, t_vector *nb)
 	*nb = vector_cross(n, *nt);
 }
 
-static t_vector	get_random_point_on_light_disk(t_light light, t_point origin, unsigned int *seed)
+static t_vector4	get_random_point_on_light_disk(t_light light, t_point origin, unsigned int *seed)
 {
-	t_vector	light_dir;
-	t_vector	u;
-	t_vector	v;
-	t_vector	point;
+	t_vector4	light_dir;
+	t_vector4	u;
+	t_vector4	v;
+	t_vector4	point;
 	float		theta;
 	float		r;
 
@@ -33,10 +33,10 @@ static t_vector	get_random_point_on_light_disk(t_light light, t_point origin, un
 float	calculate_shadow_factor(t_data *data, t_surface *surf,
 			t_light light, unsigned int *seed)
 {
-	t_vector	sample_pt;
+	t_vector4	sample_pt;
 	t_ray		shadow_ray;
 	float		dist;
-	t_vector	dir;
+	t_vector4	dir;
 
 	if (light.type == LIGHT_POINT || light.radius <= EPSILON)
 	{
