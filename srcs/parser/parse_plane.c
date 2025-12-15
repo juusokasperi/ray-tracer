@@ -19,10 +19,12 @@ bool	parse_plane(char *line, t_line_context *ctx)
 	t_object_mat	*mat;
 	t_data			*data;
 	Arena			*a;
+	const int		unique_idx = 
+		ctx->data->scene.object_count + ctx->data->scene.plane_count;
 
 	data = ctx->data;
 	a = &data->arena;
-	mat = &data->scene.materials[ctx->mat_idx];
+	mat = &data->scene.materials[unique_idx];
 	if (!line || !data || !validate_object_count(data))
 		return (false);
 	parts = arena_split_isspace(a, line);
@@ -33,7 +35,7 @@ bool	parse_plane(char *line, t_line_context *ctx)
 			&ctx->color_2))
 		return (false);
 	apply_object_modifiers(mat, ctx);
-	geom->mat_idx = ctx->mat_idx;
+	geom->mat_idx = unique_idx;
 	data->scene.plane_count++;
 	return (true);
 }

@@ -20,7 +20,6 @@
 typedef struct s_line_context
 {
 	char	*line;
-	int		mat_idx;
 	int		idx;
 	float	shininess;
 	float	glossiness;
