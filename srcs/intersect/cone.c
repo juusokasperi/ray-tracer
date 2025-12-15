@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "mini_rt.h"
+#include "structs.h"
 
 static float	disk_intersection(t_ray ray, t_cone cone);
 static float	infinite_cone_intersection(t_ray ray, t_cone cone);
@@ -25,11 +26,13 @@ static float	infinite_cone_intersection(t_ray ray, t_cone cone);
 */
 float	cone_ray_intersect(t_ray ray, t_cone *cone)
 {
-	float	t[2];
-	int		i;
-	float	min;
+	float		t[2];
+	int			i;
+	float		min;
+	t_vector4	tip_pos;
 
-	ray = transform_ray(ray, cone->center, cone->axis);
+	tip_pos = vector_add(cone->center, vector_multiply(cone->axis, cone->height * 0.5f));
+	ray = transform_ray(ray, tip_pos, cone->axis);
 	t[0] = infinite_cone_intersection(ray, *cone);
 	t[1] = disk_intersection(ray, *cone);
 	min = -1;
