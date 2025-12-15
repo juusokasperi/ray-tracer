@@ -61,7 +61,7 @@ t_rgb	calculate_light_contribution(t_light light, t_surface *surf,
 Calculates the color that is present always whether the object is in
 shadow or not.
 */
-t_rgb	calculate_ambient(t_object_mat *obj, t_ambient ambient)
+t_rgb	calculate_ambient(const t_object_mat *obj, t_ambient ambient)
 {
 	t_rgb	res;
 

@@ -13,7 +13,7 @@
 #include "mini_rt.h"
 #include "thread_tile_inline.h"
 
-static bool should_skip_lighting(t_object_mat *mat)
+static bool should_skip_lighting(const t_object_mat *mat)
 {
 	return (mat->reflectivity > 0.8f || mat->refraction_index > 0.0f);
 }

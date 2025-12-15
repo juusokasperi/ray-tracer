@@ -24,7 +24,7 @@ static t_point	get_local_hit(t_point world_hit, t_cylinder cyl);
 	Applies checkerboard pattern to an object based on the type of the object.
 */
 
-t_rgb	get_object_color(t_object_geom *geom, t_object_mat *mat, t_point world_hit)
+t_rgb	get_object_color(const t_object_geom *geom, const t_object_mat *mat, t_point world_hit)
 {
 	bool is_even;
 

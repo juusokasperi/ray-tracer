@@ -12,7 +12,7 @@ static void prepare_surface(t_surface *surf, t_ray ray, t_object_geom *geom,
 	surf->view_dir = ray.direction;
 	surf->ray_origin = ray.origin;
 	surf->normal = calculate_normal(ray.direction, surf->point, geom);
-	surf->mat->color = get_object_color(geom, surf->mat, surf->point);
+	surf->resolved_color = get_object_color(geom, surf->mat, surf->point);
 }
 
 static void adjust_normal_and_eta(t_vector ray_dir, t_vector *normal, 
@@ -78,7 +78,7 @@ static t_ray	handle_opaque(t_data *data, t_ray ray, t_surface *surf, t_vector *t
 		return (ray);
 	}
 	*throughput = vector_multiply(*throughput, surf->mat->reflectivity);
-	*throughput = vec_mul(*throughput, rgb_to_vec_norm(surf->mat->color));
+	*throughput = vec_mul(*throughput, rgb_to_vec_norm(surf->resolved_color));
 	dir = reflect_dir(ray.direction, surf->normal);
 	return (make_ray(surf->point, apply_glossiness(dir, surf->mat->glossiness, seed)));
 }

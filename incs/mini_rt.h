@@ -71,7 +71,7 @@ t_rgb	calculate_color(t_data *data, t_surface *surf, unsigned int *seed);
 
 void			fill_black(t_data *data);
 //	color/checkerboard.c
-t_rgb	get_object_color(t_object_geom *geom, t_object_mat *mat, t_point world_hit);
+t_rgb	get_object_color(const t_object_geom *geom, const t_object_mat *mat, t_point world_hit);
 
 // color/material.c
 t_rgb			get_material_color(t_data *data, t_surface *surf,
@@ -109,7 +109,7 @@ t_rgb			vec_to_rgb(t_vector vec);
 
 //	shadows/shadow_check.c && shadow_check_2.c
 bool			light_visible(t_vector cam_pos, t_vector light_pos,
-					t_object_geom *obj);
+					const t_object_geom *obj);
 bool			in_shadow(t_ray light_ray, t_data *data, float max_dist);
 //	shadows/calculate_normals.c
 t_point			calculate_normal(t_vector view_direction,
@@ -122,7 +122,7 @@ float			calculate_shadow_factor(t_data *data, t_surface *surf,
 //	shadows/diffuse.c
 t_rgb			calculate_light_contribution(t_light light, t_surface *surf,
 					t_ray light_ray, float light_dist);
-t_rgb			calculate_ambient(t_object_mat *obj, t_ambient ambient);
+t_rgb			calculate_ambient(const t_object_mat *obj, t_ambient ambient);
 
 //	utils/ray_utils.c
 t_ray			build_light_ray(t_point hit_point, t_light light,

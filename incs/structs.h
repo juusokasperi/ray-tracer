@@ -261,8 +261,9 @@ typedef struct s_surface_info
 	t_vector		normal;
 	t_vector		view_dir;
 	t_point			ray_origin;
-	t_object_geom	*geom;
-	t_object_mat	*mat;
+	const t_object_geom	*geom;
+	const t_object_mat	*mat;
+	t_rgb			resolved_color;
 	int				geom_idx;
 }	t_surface;
 
